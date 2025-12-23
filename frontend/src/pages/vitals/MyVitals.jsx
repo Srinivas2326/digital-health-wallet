@@ -1,0 +1,107 @@
+import { useEffect, useState } from "react";
+import api from "../../api/axios";
+import Layout from "../../components/common/Layout";
+
+export default function MyVitals() {
+  const [vitals, setVitals] = useState([]);
+  const [type, setType] = useState("");
+  const [value, setValue] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+
+  const fetchVitals = async () => {
+    try {
+      const res = await api.get("/vitals");
+      setVitals(res.data.vitals || []);
+    } catch {
+      setError("Failed to load vitals");
+    }
+  };
+
+  const addVital = async () => {
+    setError("");
+    setSuccess("");
+
+    if (!type || !value) {
+      setError("Vital type and value are required");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      await api.post("/vitals", {
+        vitalType: type,
+        value,
+      });
+
+      setSuccess("Vital added successfully ❤️");
+      setType("");
+      setValue("");
+      fetchVitals();
+    } catch {
+      setError("Failed to add vital");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchVitals();
+  }, []);
+
+  return (
+    <Layout>
+      <h2 className="page-title">My Vitals</h2>
+
+      {/* Add Vital Card */}
+      <div className="card mt-20" style={{ maxWidth: "420px" }}>
+        {error && (
+          <p style={{ color: "#dc2626", marginBottom: "10px" }}>
+            {error}
+          </p>
+        )}
+
+        {success && (
+          <p style={{ color: "#16a34a", marginBottom: "10px" }}>
+            {success}
+          </p>
+        )}
+
+        <input
+          placeholder="Vital Type (BP, Sugar, HR)"
+          value={type}
+          onChange={(e) => setType(e.target.value)}
+        />
+
+        <input
+          placeholder="Value (120/80)"
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+        />
+
+        <button onClick={addVital} disabled={loading}>
+          {loading ? "Saving..." : "Add Vital"}
+        </button>
+      </div>
+
+      {/* Vitals List */}
+      <div className="card-grid mt-20">
+        {vitals.length === 0 ? (
+          <p>No vitals recorded yet.</p>
+        ) : (
+          vitals.map((v) => (
+            <div className="card" key={v.id}>
+              <h4 style={{ marginBottom: "6px" }}>
+                ❤️ {v.vitalType}
+              </h4>
+              <p style={{ fontSize: "18px", fontWeight: "600" }}>
+                {v.value}
+              </p>
+            </div>
+          ))
+        )}
+      </div>
+    </Layout>
+  );
+}
