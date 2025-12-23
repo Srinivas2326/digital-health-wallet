@@ -2,6 +2,27 @@ import { useEffect, useState } from "react";
 import api from "../../api/axios";
 import Layout from "../../components/common/Layout";
 
+// Chart.js imports
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Tooltip,
+  Legend,
+} from "chart.js";
+import { Line } from "react-chartjs-2";
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Tooltip,
+  Legend
+);
+
 export default function MyVitals() {
   const [vitals, setVitals] = useState([]);
   const [type, setType] = useState("");
@@ -50,11 +71,39 @@ export default function MyVitals() {
     fetchVitals();
   }, []);
 
+  // ============================
+  // CHART DATA BUILDER
+  // ============================
+  const buildChartData = (vitalType) => {
+    const filtered = vitals.filter(
+      (v) =>
+        v.vitalType.toLowerCase() === vitalType.toLowerCase() &&
+        !isNaN(parseFloat(v.value))
+    );
+
+    return {
+      labels: filtered.map((v) =>
+        new Date(v.createdAt).toLocaleDateString()
+      ),
+      datasets: [
+        {
+          label: vitalType,
+          data: filtered.map((v) => parseFloat(v.value)),
+          borderColor:
+            vitalType.toLowerCase() === "bp" ? "#ef4444" : "#2563eb",
+          backgroundColor: "rgba(0,0,0,0)",
+          tension: 0.4,
+          pointRadius: 4,
+        },
+      ],
+    };
+  };
+
   return (
     <Layout>
       <h2 className="page-title">My Vitals</h2>
 
-      {/* Add Vital Card */}
+      {/* ADD VITAL */}
       <div className="card mt-20" style={{ maxWidth: "420px" }}>
         {error && (
           <p style={{ color: "#dc2626", marginBottom: "10px" }}>
@@ -69,13 +118,13 @@ export default function MyVitals() {
         )}
 
         <input
-          placeholder="Vital Type (BP, Sugar, HR)"
+          placeholder="Vital Type (BP, Sugar)"
           value={type}
           onChange={(e) => setType(e.target.value)}
         />
 
         <input
-          placeholder="Value (120/80)"
+          placeholder="Value (120, 95)"
           value={value}
           onChange={(e) => setValue(e.target.value)}
         />
@@ -85,7 +134,7 @@ export default function MyVitals() {
         </button>
       </div>
 
-      {/* Vitals List */}
+      {/* VITALS LIST */}
       <div className="card-grid mt-20">
         {vitals.length === 0 ? (
           <p>No vitals recorded yet.</p>
@@ -101,6 +150,19 @@ export default function MyVitals() {
             </div>
           ))
         )}
+      </div>
+
+      {/* CHARTS */}
+      <div className="card-grid mt-20">
+        <div className="card">
+          <h4>Blood Pressure Trend</h4>
+          <Line data={buildChartData("BP")} />
+        </div>
+
+        <div className="card">
+          <h4>Sugar Level Trend</h4>
+          <Line data={buildChartData("Sugar")} />
+        </div>
       </div>
     </Layout>
   );

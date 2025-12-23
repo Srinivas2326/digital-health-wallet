@@ -388,3 +388,8 @@ a {
 .delete-btn:hover {
   background: #dc2626;
 }
+
+
+canvas{
+  max-height:280px;
+}
