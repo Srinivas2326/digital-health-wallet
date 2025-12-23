@@ -327,3 +327,64 @@ a {
 .mt-20 {
   margin-top: 20px;
 }
+
+/* ===============================
+   Report Actions
+================================ */
+
+.report-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.report-link {
+  color: #2563eb;
+  font-weight: 500;
+  margin-top: 6px;
+}
+
+/* Share */
+.share-box {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.share-box input {
+  flex: 1;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  font-size: 14px;
+}
+
+.share-btn {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.share-btn:hover {
+  background: #1d4ed8;
+}
+
+/* Delete */
+.delete-btn {
+  margin-top: 10px;
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.delete-btn:hover {
+  background: #dc2626;
+}

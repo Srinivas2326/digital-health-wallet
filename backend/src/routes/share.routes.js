@@ -8,19 +8,11 @@ const {
   revokeAccess,
 } = require("../controllers/share.controller");
 
-/**
- * SHARE REPORT
- */
+
 router.post("/", protect, shareReport);
 
-/**
- * REPORTS SHARED WITH ME
- */
 router.get("/me", protect, getSharedWithMe);
 
-/**
- * REVOKE ACCESS
- */
 router.delete("/", protect, revokeAccess);
 
 module.exports = router;

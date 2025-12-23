@@ -15,35 +15,58 @@ exports.shareReport = (req, res) => {
       });
     }
 
-    // Check ownership
+    // 1️⃣ Check report ownership
     db.get(
-      "SELECT * FROM reports WHERE id = ? AND userId = ?",
+      "SELECT id FROM reports WHERE id = ? AND userId = ?",
       [reportId, req.user.id],
       (err, report) => {
+        if (err) {
+          return res.status(500).json({
+            message: "Database error",
+            error: err.message,
+          });
+        }
+
         if (!report) {
           return res.status(403).json({
             message: "You are not authorized to share this report",
           });
         }
 
-        // Insert share access
-        db.run(
+        // 2️⃣ Prevent duplicate sharing
+        db.get(
           `
-          INSERT INTO shared_access (reportId, sharedWith, permission)
-          VALUES (?,?,?)
+          SELECT id FROM shared_access
+          WHERE reportId = ? AND sharedWith = ?
           `,
-          [reportId, sharedWith, "read"],
-          function (err) {
-            if (err) {
-              return res.status(500).json({
-                message: "Database error",
-                error: err.message,
+          [reportId, sharedWith],
+          (err, existing) => {
+            if (existing) {
+              return res.status(409).json({
+                message: "Report already shared with this user",
               });
             }
 
-            return res.status(201).json({
-              message: "Report shared successfully",
-            });
+            // 3️⃣ Insert shared access
+            db.run(
+              `
+              INSERT INTO shared_access (reportId, sharedWith, permission)
+              VALUES (?,?,?)
+              `,
+              [reportId, sharedWith, "read"],
+              function (err) {
+                if (err) {
+                  return res.status(500).json({
+                    message: "Database error",
+                    error: err.message,
+                  });
+                }
+
+                return res.status(201).json({
+                  message: "Report shared successfully",
+                });
+              }
+            );
           }
         );
       }
@@ -75,6 +98,7 @@ exports.getSharedWithMe = (req, res) => {
       FROM reports r
       JOIN shared_access s ON r.id = s.reportId
       WHERE s.sharedWith = ?
+      ORDER BY r.reportDate DESC
       `,
       [req.user.email],
       (err, rows) => {
@@ -87,7 +111,7 @@ exports.getSharedWithMe = (req, res) => {
 
         return res.json({
           count: rows.length,
-          reports: rows,
+          reports: rows || [],
         });
       }
     );
@@ -101,30 +125,49 @@ exports.getSharedWithMe = (req, res) => {
 
 /**
  * ============================
- * REVOKE SHARED ACCESS
+ * REVOKE SHARED ACCESS (OWNER)
  * ============================
  */
 exports.revokeAccess = (req, res) => {
   try {
     const { reportId, sharedWith } = req.body;
 
-    db.run(
-      `
-      DELETE FROM shared_access
-      WHERE reportId = ? AND sharedWith = ?
-      `,
-      [reportId, sharedWith],
-      function (err) {
-        if (err) {
-          return res.status(500).json({
-            message: "Database error",
-            error: err.message,
+    if (!reportId || !sharedWith) {
+      return res.status(400).json({
+        message: "Report ID and sharedWith email are required",
+      });
+    }
+
+    // Ensure owner owns the report
+    db.get(
+      "SELECT id FROM reports WHERE id = ? AND userId = ?",
+      [reportId, req.user.id],
+      (err, report) => {
+        if (!report) {
+          return res.status(403).json({
+            message: "Not authorized to revoke access",
           });
         }
 
-        return res.json({
-          message: "Access revoked successfully",
-        });
+        db.run(
+          `
+          DELETE FROM shared_access
+          WHERE reportId = ? AND sharedWith = ?
+          `,
+          [reportId, sharedWith],
+          function (err) {
+            if (err) {
+              return res.status(500).json({
+                message: "Database error",
+                error: err.message,
+              });
+            }
+
+            return res.json({
+              message: "Access revoked successfully",
+            });
+          }
+        );
       }
     );
   } catch (error) {

@@ -5,6 +5,8 @@ import Layout from "../../components/common/Layout";
 export default function MyReports() {
   const [reports, setReports] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [shareEmail, setShareEmail] = useState({});
+  const [sharing, setSharing] = useState({});
 
   const fetchReports = async () => {
     try {
@@ -21,19 +23,43 @@ export default function MyReports() {
     fetchReports();
   }, []);
 
-  // ✅ DELETE REPORT HANDLER
+  // ======================
+  // DELETE REPORT
+  // ======================
   const deleteReport = async (id) => {
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this report?"
-    );
-
-    if (!confirmDelete) return;
+    if (!window.confirm("Are you sure you want to delete this report?")) return;
 
     try {
       await api.delete(`/reports/${id}`);
       setReports((prev) => prev.filter((r) => r.id !== id));
-    } catch (err) {
+    } catch {
       alert("Failed to delete report");
+    }
+  };
+
+  // ======================
+  // SHARE REPORT
+  // ======================
+  const shareReport = async (reportId) => {
+    if (!shareEmail[reportId]) {
+      alert("Please enter an email");
+      return;
+    }
+
+    try {
+      setSharing((prev) => ({ ...prev, [reportId]: true }));
+
+      await api.post("/share", {
+        reportId,
+        sharedWith: shareEmail[reportId],
+      });
+
+      alert("Report shared successfully");
+      setShareEmail((prev) => ({ ...prev, [reportId]: "" }));
+    } catch {
+      alert("Failed to share report");
+    } finally {
+      setSharing((prev) => ({ ...prev, [reportId]: false }));
     }
   };
 
@@ -54,39 +80,47 @@ export default function MyReports() {
             )}`;
 
             return (
-              <div className="card" key={r.id}>
+              <div className="card report-card" key={r.id}>
                 <h4>{r.type}</h4>
                 <p>Date: {r.reportDate}</p>
                 <p>Vitals: {r.vitals || "N/A"}</p>
 
-                {/* VIEW / DOWNLOAD ONLY */}
+                {/* VIEW / DOWNLOAD */}
                 <a
                   href={fileUrl}
                   target="_blank"
                   rel="noreferrer"
-                  style={{
-                    display: "inline-block",
-                    marginTop: "10px",
-                    color: "#2563eb",
-                    fontWeight: 500,
-                  }}
+                  className="report-link"
                 >
                   View / Download Report
                 </a>
 
-                {/* DELETE BUTTON */}
+                {/* SHARE SECTION */}
+                <div className="share-box">
+                  <input
+                    type="email"
+                    placeholder="Share with email"
+                    value={shareEmail[r.id] || ""}
+                    onChange={(e) =>
+                      setShareEmail((prev) => ({
+                        ...prev,
+                        [r.id]: e.target.value,
+                      }))
+                    }
+                  />
+                  <button
+                    onClick={() => shareReport(r.id)}
+                    disabled={sharing[r.id]}
+                    className="share-btn"
+                  >
+                    {sharing[r.id] ? "Sharing..." : "Share"}
+                  </button>
+                </div>
+
+                {/* DELETE */}
                 <button
                   onClick={() => deleteReport(r.id)}
-                  style={{
-                    marginTop: "12px",
-                    background: "#ef4444",
-                    color: "white",
-                    border: "none",
-                    padding: "8px 10px",
-                    borderRadius: "6px",
-                    cursor: "pointer",
-                    width: "100%",
-                  }}
+                  className="delete-btn"
                 >
                   Delete Report
                 </button>
