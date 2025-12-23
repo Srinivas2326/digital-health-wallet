@@ -5,14 +5,18 @@ import Layout from "../../components/common/Layout";
 export default function MyReports() {
   const [reports, setReports] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [shareEmail, setShareEmail] = useState({});
-  const [sharing, setSharing] = useState({});
+
+  // Filter states
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
+  const [type, setType] = useState("");
+  const [vitals, setVitals] = useState("");
 
   const fetchReports = async () => {
     try {
       const res = await api.get("/reports");
       setReports(res.data.reports || []);
-    } catch (err) {
+    } catch {
       console.error("Failed to fetch reports");
     } finally {
       setLoading(false);
@@ -24,10 +28,34 @@ export default function MyReports() {
   }, []);
 
   // ======================
+  // APPLY FILTER
+  // ======================
+  const applyFilter = async () => {
+    setLoading(true);
+
+    try {
+      const res = await api.get("/reports/filter", {
+        params: {
+          fromDate,
+          toDate,
+          type,
+          vitals,
+        },
+      });
+
+      setReports(res.data.reports || []);
+    } catch {
+      alert("Failed to filter reports");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // ======================
   // DELETE REPORT
   // ======================
   const deleteReport = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this report?")) return;
+    if (!window.confirm("Delete this report?")) return;
 
     try {
       await api.delete(`/reports/${id}`);
@@ -37,40 +65,57 @@ export default function MyReports() {
     }
   };
 
-  // ======================
-  // SHARE REPORT
-  // ======================
-  const shareReport = async (reportId) => {
-    if (!shareEmail[reportId]) {
-      alert("Please enter an email");
-      return;
-    }
-
-    try {
-      setSharing((prev) => ({ ...prev, [reportId]: true }));
-
-      await api.post("/share", {
-        reportId,
-        sharedWith: shareEmail[reportId],
-      });
-
-      alert("Report shared successfully");
-      setShareEmail((prev) => ({ ...prev, [reportId]: "" }));
-    } catch {
-      alert("Failed to share report");
-    } finally {
-      setSharing((prev) => ({ ...prev, [reportId]: false }));
-    }
-  };
-
   return (
     <Layout>
       <h2 className="page-title">My Reports</h2>
 
+      {/* FILTER SECTION */}
+      <div className="card mt-20">
+        <h4>Filter Reports</h4>
+
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
+            gap: "12px",
+            marginTop: "12px",
+          }}
+        >
+          <input
+            type="date"
+            value={fromDate}
+            onChange={(e) => setFromDate(e.target.value)}
+          />
+
+          <input
+            type="date"
+            value={toDate}
+            onChange={(e) => setToDate(e.target.value)}
+          />
+
+          <input
+            placeholder="Report Type (Blood, X-Ray)"
+            value={type}
+            onChange={(e) => setType(e.target.value)}
+          />
+
+          <input
+            placeholder="Vitals keyword (BP, Sugar)"
+            value={vitals}
+            onChange={(e) => setVitals(e.target.value)}
+          />
+        </div>
+
+        <button onClick={applyFilter} style={{ marginTop: "12px" }}>
+          Apply Filter
+        </button>
+      </div>
+
+      {/* REPORTS LIST */}
       {loading ? (
         <p className="mt-20">Loading reports...</p>
       ) : reports.length === 0 ? (
-        <p className="mt-20">No reports uploaded yet.</p>
+        <p className="mt-20">No reports found.</p>
       ) : (
         <div className="card-grid mt-20">
           {reports.map((r) => {
@@ -80,47 +125,23 @@ export default function MyReports() {
             )}`;
 
             return (
-              <div className="card report-card" key={r.id}>
+              <div className="card" key={r.id}>
                 <h4>{r.type}</h4>
                 <p>Date: {r.reportDate}</p>
                 <p>Vitals: {r.vitals || "N/A"}</p>
 
-                {/* VIEW / DOWNLOAD */}
                 <a
                   href={fileUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="report-link"
+                  style={{ color: "#2563eb", fontWeight: 500 }}
                 >
                   View / Download Report
                 </a>
 
-                {/* SHARE SECTION */}
-                <div className="share-box">
-                  <input
-                    type="email"
-                    placeholder="Share with email"
-                    value={shareEmail[r.id] || ""}
-                    onChange={(e) =>
-                      setShareEmail((prev) => ({
-                        ...prev,
-                        [r.id]: e.target.value,
-                      }))
-                    }
-                  />
-                  <button
-                    onClick={() => shareReport(r.id)}
-                    disabled={sharing[r.id]}
-                    className="share-btn"
-                  >
-                    {sharing[r.id] ? "Sharing..." : "Share"}
-                  </button>
-                </div>
-
-                {/* DELETE */}
                 <button
-                  onClick={() => deleteReport(r.id)}
                   className="delete-btn"
+                  onClick={() => deleteReport(r.id)}
                 >
                   Delete Report
                 </button>
