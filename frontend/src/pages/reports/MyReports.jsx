@@ -6,20 +6,36 @@ export default function MyReports() {
   const [reports, setReports] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchReports = async () => {
-      try {
-        const res = await api.get("/reports");
-        setReports(res.data.reports || []);
-      } catch (err) {
-        console.error("Failed to fetch reports");
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchReports = async () => {
+    try {
+      const res = await api.get("/reports");
+      setReports(res.data.reports || []);
+    } catch (err) {
+      console.error("Failed to fetch reports");
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchReports();
   }, []);
+
+  // ✅ DELETE REPORT HANDLER
+  const deleteReport = async (id) => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this report?"
+    );
+
+    if (!confirmDelete) return;
+
+    try {
+      await api.delete(`/reports/${id}`);
+      setReports((prev) => prev.filter((r) => r.id !== id));
+    } catch (err) {
+      alert("Failed to delete report");
+    }
+  };
 
   return (
     <Layout>
@@ -32,7 +48,6 @@ export default function MyReports() {
       ) : (
         <div className="card-grid mt-20">
           {reports.map((r) => {
-            // ✅ FIXED FILE URL
             const fileUrl = `http://localhost:5000/${r.filePath.replace(
               /^\/?/,
               ""
@@ -44,19 +59,7 @@ export default function MyReports() {
                 <p>Date: {r.reportDate}</p>
                 <p>Vitals: {r.vitals || "N/A"}</p>
 
-                {/* Image preview (if image) */}
-                {r.filePath.match(/\.(jpg|jpeg|png)$/i) && (
-                  <img
-                    src={fileUrl}
-                    alt="Medical Report"
-                    style={{
-                      width: "100%",
-                      marginTop: "10px",
-                      borderRadius: "8px",
-                    }}
-                  />
-                )}
-
+                {/* VIEW / DOWNLOAD ONLY */}
                 <a
                   href={fileUrl}
                   target="_blank"
@@ -70,6 +73,23 @@ export default function MyReports() {
                 >
                   View / Download Report
                 </a>
+
+                {/* DELETE BUTTON */}
+                <button
+                  onClick={() => deleteReport(r.id)}
+                  style={{
+                    marginTop: "12px",
+                    background: "#ef4444",
+                    color: "white",
+                    border: "none",
+                    padding: "8px 10px",
+                    borderRadius: "6px",
+                    cursor: "pointer",
+                    width: "100%",
+                  }}
+                >
+                  Delete Report
+                </button>
               </div>
             );
           })}

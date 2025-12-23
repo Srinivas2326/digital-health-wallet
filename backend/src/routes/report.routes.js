@@ -8,6 +8,7 @@ const {
   uploadReport,
   getMyReports,
   filterReports,
+  deleteReport, // ✅ ADD THIS
 } = require("../controllers/report.controller");
 
 
@@ -23,5 +24,8 @@ router.get("/", protect, getMyReports);
 
 
 router.get("/filter", protect, filterReports);
+
+
+router.delete("/:id", protect, deleteReport);
 
 module.exports = router;

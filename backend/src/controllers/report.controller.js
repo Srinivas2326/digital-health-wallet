@@ -1,4 +1,6 @@
 const db = require("../config/db");
+const fs = require("fs");
+const path = require("path");
 
 /**
  * ============================
@@ -20,8 +22,7 @@ exports.uploadReport = (req, res) => {
       });
     }
 
-    // ✅ IMPORTANT FIX HERE
-    // Store path relative to /uploads (public URL)
+    // Store public path (IMPORTANT)
     const filePath = `uploads/reports/${req.file.filename}`;
 
     db.run(
@@ -105,11 +106,6 @@ exports.getMyReports = (req, res) => {
  * ============================
  * FILTER REPORTS
  * ============================
- * Query Params:
- *  - fromDate
- *  - toDate
- *  - type
- *  - vitals
  */
 exports.filterReports = (req, res) => {
   try {
@@ -170,4 +166,61 @@ exports.filterReports = (req, res) => {
       error: error.message,
     });
   }
+};
+
+/**
+ * ============================
+ * DELETE REPORT (OWNER ONLY)
+ * ============================
+ */
+exports.deleteReport = (req, res) => {
+  const reportId = req.params.id;
+  const userId = req.user.id;
+
+  // Verify ownership
+  db.get(
+    "SELECT * FROM reports WHERE id = ? AND userId = ?",
+    [reportId, userId],
+    (err, report) => {
+      if (err) {
+        return res.status(500).json({ message: "Database error" });
+      }
+
+      if (!report) {
+        return res
+          .status(404)
+          .json({ message: "Report not found or unauthorized" });
+      }
+
+      // Delete file from disk
+      const absolutePath = path.join(
+        __dirname,
+        "..",
+        report.filePath
+      );
+
+      fs.unlink(absolutePath, (fsErr) => {
+        if (fsErr) {
+          console.warn("File delete warning:", fsErr.message);
+        }
+
+        // Delete DB record
+        db.run(
+          "DELETE FROM reports WHERE id = ?",
+          [reportId],
+          function (delErr) {
+            if (delErr) {
+              return res
+                .status(500)
+                .json({ message: "Failed to delete report" });
+            }
+
+            return res.json({
+              message: "Report deleted successfully",
+            });
+          }
+        );
+      });
+    }
+  );
 };
