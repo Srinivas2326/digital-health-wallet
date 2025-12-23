@@ -71,9 +71,7 @@ export default function MyVitals() {
     fetchVitals();
   }, []);
 
-  // ============================
   // CHART DATA BUILDER
-  // ============================
   const buildChartData = (vitalType) => {
     const filtered = vitals.filter(
       (v) =>

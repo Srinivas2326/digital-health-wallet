@@ -19,7 +19,7 @@ db.serialize(() => {
     )
   `);
 
-  // REPORTS TABLE ✅ (FIX)
+  // REPORTS TABLE 
   db.run(`
     CREATE TABLE IF NOT EXISTS reports (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -33,7 +33,7 @@ db.serialize(() => {
     )
   `);
 
-  // VITALS TABLE (for next steps)
+  // VITALS TABLE
   db.run(`
     CREATE TABLE IF NOT EXISTS vitals (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -45,7 +45,7 @@ db.serialize(() => {
     )
   `);
 
-  // SHARED ACCESS TABLE (for later)
+  // SHARED ACCESS TABLE 
   db.run(`
     CREATE TABLE IF NOT EXISTS shared_access (
       id INTEGER PRIMARY KEY AUTOINCREMENT,

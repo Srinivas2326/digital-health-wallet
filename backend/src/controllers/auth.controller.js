@@ -2,26 +2,24 @@ const db = require("../config/db");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-/**
- * =========================
- * REGISTER USER
- * =========================
- */
+
+// REGISTER USER
+ 
 exports.register = (req, res) => {
   try {
     const { name, email, password } = req.body;
 
-    // 1️⃣ Validation
+    // 1️ Validation
     if (!name || !email || !password) {
       return res.status(400).json({
         message: "Name, email, and password are required",
       });
     }
 
-    // 2️⃣ Hash password
+    // 2️ Hash password
     const hashedPassword = bcrypt.hashSync(password, 10);
 
-    // 3️⃣ Insert user
+    // 3️ Insert user
     db.run(
       "INSERT INTO users (name, email, password) VALUES (?,?,?)",
       [name, email, hashedPassword],
@@ -52,23 +50,21 @@ exports.register = (req, res) => {
   }
 };
 
-/**
- * =========================
- * LOGIN USER
- * =========================
- */
+
+//   LOGIN USER
+ 
 exports.login = (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // 1️⃣ Validation
+    // 1️ Validation
     if (!email || !password) {
       return res.status(400).json({
         message: "Email and password are required",
       });
     }
 
-    // 2️⃣ Fetch user
+    // 2️ Fetch user
     db.get(
       "SELECT id, email, password FROM users WHERE email = ?",
       [email],
@@ -86,7 +82,7 @@ exports.login = (req, res) => {
           });
         }
 
-        // 3️⃣ Compare password
+        // 3️ Compare password
         const isMatch = bcrypt.compareSync(password, user.password);
         if (!isMatch) {
           return res.status(401).json({
@@ -94,14 +90,14 @@ exports.login = (req, res) => {
           });
         }
 
-        // 4️⃣ Ensure JWT secret exists
+        // 4️ Ensure JWT secret exists
         if (!process.env.JWT_SECRET) {
           return res.status(500).json({
             message: "JWT secret not configured",
           });
         }
 
-        // 5️⃣ Generate token
+        // 5️ Generate token
         const token = jwt.sign(
           {
             id: user.id,
@@ -111,7 +107,7 @@ exports.login = (req, res) => {
           { expiresIn: "1d" }
         );
 
-        // 6️⃣ Success response
+        // 6️ Success response
         return res.json({
           message: "Login successful",
           token,

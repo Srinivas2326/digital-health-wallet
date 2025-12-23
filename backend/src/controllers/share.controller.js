@@ -1,10 +1,7 @@
 const db = require("../config/db");
 
-/**
- * ============================
- * SHARE REPORT (OWNER ONLY)
- * ============================
- */
+  // SHARE REPORT (OWNER ONLY)
+
 exports.shareReport = (req, res) => {
   try {
     const { reportId, sharedWith } = req.body;
@@ -15,7 +12,7 @@ exports.shareReport = (req, res) => {
       });
     }
 
-    // 1️⃣ Check report ownership
+    // 1️ Check report ownership
     db.get(
       "SELECT id FROM reports WHERE id = ? AND userId = ?",
       [reportId, req.user.id],
@@ -33,7 +30,7 @@ exports.shareReport = (req, res) => {
           });
         }
 
-        // 2️⃣ Prevent duplicate sharing
+        // 2️ Prevent duplicate sharing
         db.get(
           `
           SELECT id FROM shared_access
@@ -47,7 +44,7 @@ exports.shareReport = (req, res) => {
               });
             }
 
-            // 3️⃣ Insert shared access
+            // 3️ Insert shared access
             db.run(
               `
               INSERT INTO shared_access (reportId, sharedWith, permission)
@@ -79,11 +76,9 @@ exports.shareReport = (req, res) => {
   }
 };
 
-/**
- * ============================
- * GET REPORTS SHARED WITH ME
- * ============================
- */
+
+// GET REPORTS SHARED WITH ME
+
 exports.getSharedWithMe = (req, res) => {
   try {
     db.all(
@@ -123,11 +118,9 @@ exports.getSharedWithMe = (req, res) => {
   }
 };
 
-/**
- * ============================
- * REVOKE SHARED ACCESS (OWNER)
- * ============================
- */
+
+  // REVOKE SHARED ACCESS (OWNER)
+
 exports.revokeAccess = (req, res) => {
   try {
     const { reportId, sharedWith } = req.body;

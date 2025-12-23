@@ -27,9 +27,7 @@ export default function MyReports() {
     fetchReports();
   }, []);
 
-  // ======================
   // APPLY FILTER
-  // ======================
   const applyFilter = async () => {
     setLoading(true);
 
@@ -51,9 +49,7 @@ export default function MyReports() {
     }
   };
 
-  // ======================
   // DELETE REPORT
-  // ======================
   const deleteReport = async (id) => {
     if (!window.confirm("Delete this report?")) return;
 

@@ -1,6 +1,4 @@
-/* ===============================
-   THEME VARIABLES
-================================ */
+   /* THEME VARIABLES */
 :root {
   --bg-main: #f8fafc;
   --bg-card: #ffffff;
@@ -11,7 +9,7 @@
 }
 
 [data-theme="dark"] {
-  --bg-main: #020617;
+  --bg-main: #01030a;
   --bg-card: #1e293b;
   --bg-sidebar: #020617;
   --text-main: #f1f5f9;
@@ -19,9 +17,7 @@
   --border-color: #334155;
 }
 
-/* ===============================
-   Global Reset & Base
-================================ */
+
 * {
   margin: 0;
   padding: 0;
@@ -41,9 +37,7 @@ a {
   color: inherit;
 }
 
-/* ===============================
-   Auth Pages (Login / Register)
-================================ */
+   /* Auth Pages (Login / Register) */
 .auth-container {
   min-height: 100vh;
   display: flex;
@@ -107,9 +101,7 @@ a {
   font-weight: 500;
 }
 
-/* ===============================
-   App Layout
-================================ */
+   /* App Layout */
 .app-layout {
   display: flex;
   min-height: 100vh;
@@ -215,9 +207,7 @@ a {
   padding: 26px;
 }
 
-/* ===============================
-   Dashboard
-================================ */
+   /* Dashboard */
 .page-title {
   font-size: 22px;
   font-weight: 600;
@@ -284,9 +274,7 @@ a {
   color: var(--text-muted);
 }
 
-/* ===============================
-   Cards / Lists
-================================ */
+   /* Cards / Lists */
 .card-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -331,9 +319,7 @@ a {
   background: #9ca3af;
 }
 
-/* ===============================
-   Report Actions
-================================ */
+   /* Report Actions */
 .delete-btn {
   margin-top: 10px;
   background: #ef4444;
@@ -349,9 +335,7 @@ a {
   background: #dc2626;
 }
 
-/* ===============================
-   Utility
-================================ */
+   /* Utility */
 .mt-20 {
   margin-top: 20px;
 }

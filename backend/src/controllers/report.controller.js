@@ -2,11 +2,9 @@ const db = require("../config/db");
 const fs = require("fs");
 const path = require("path");
 
-/**
- * ============================
- * UPLOAD MEDICAL REPORT
- * ============================
- */
+
+//   UPLOAD MEDICAL REPORT
+
 exports.uploadReport = (req, res) => {
   try {
     const { reportType, reportDate, vitals } = req.body;
@@ -59,11 +57,9 @@ exports.uploadReport = (req, res) => {
   }
 };
 
-/**
- * ============================
- * GET ALL REPORTS (LOGGED-IN USER)
- * ============================
- */
+
+//   GET ALL REPORTS (LOGGED-IN USER)
+
 exports.getMyReports = (req, res) => {
   try {
     db.all(
@@ -102,11 +98,9 @@ exports.getMyReports = (req, res) => {
   }
 };
 
-/**
- * ============================
- * FILTER REPORTS
- * ============================
- */
+
+// FILTER REPORTS
+
 exports.filterReports = (req, res) => {
   try {
     const { fromDate, toDate, type, vitals } = req.query;
@@ -168,11 +162,9 @@ exports.filterReports = (req, res) => {
   }
 };
 
-/**
- * ============================
- * DELETE REPORT (OWNER ONLY)
- * ============================
- */
+
+  // DELETE REPORT (OWNER ONLY)
+
 exports.deleteReport = (req, res) => {
   const reportId = req.params.id;
   const userId = req.user.id;

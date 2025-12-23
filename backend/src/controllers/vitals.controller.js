@@ -1,10 +1,8 @@
 const db = require("../config/db");
 
-/**
- * ============================
- * ADD VITAL RECORD
- * ============================
- */
+
+//  * ADD VITAL RECORD
+
 exports.addVital = (req, res) => {
   try {
     const { vitalType, value, recordedAt } = req.body;
@@ -48,11 +46,9 @@ exports.addVital = (req, res) => {
   }
 };
 
-/**
- * ============================
- * GET ALL VITALS (USER)
- * ============================
- */
+
+//  * GET ALL VITALS (USER)
+
 exports.getMyVitals = (req, res) => {
   try {
     db.all(
@@ -85,14 +81,12 @@ exports.getMyVitals = (req, res) => {
   }
 };
 
-/**
- * ============================
- * FILTER VITALS
- * ============================
- * Query Params:
- *  - vitalType
- *  - fromDate
- *  - toDate
+/*
+  FILTER VITALS
+  Query Params:
+   - vitalType
+   - fromDate
+   - toDate
  */
 exports.filterVitals = (req, res) => {
   try {

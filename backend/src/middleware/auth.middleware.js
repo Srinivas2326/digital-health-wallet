@@ -1,11 +1,10 @@
 const jwt = require("jsonwebtoken");
 
-/**
- * Protect routes using JWT
- */
+//   Protect routes using JWT
+
 module.exports = (req, res, next) => {
   try {
-    // 1️⃣ Get Authorization header
+    // 1️ Get Authorization header
     const authHeader = req.headers.authorization;
 
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
@@ -14,13 +13,13 @@ module.exports = (req, res, next) => {
       });
     }
 
-    // 2️⃣ Extract token
+    // 2️ Extract token
     const token = authHeader.split(" ")[1];
 
-    // 3️⃣ Verify token
+    // 3️ Verify token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    // 4️⃣ Attach user info to request
+    // 4️ Attach user info to request
     req.user = decoded;
 
     next();
