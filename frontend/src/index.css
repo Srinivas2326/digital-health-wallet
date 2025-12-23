@@ -1,4 +1,25 @@
 /* ===============================
+   THEME VARIABLES
+================================ */
+:root {
+  --bg-main: #f8fafc;
+  --bg-card: #ffffff;
+  --bg-sidebar: #0f172a;
+  --text-main: #1f2937;
+  --text-muted: #6b7280;
+  --border-color: #e5e7eb;
+}
+
+[data-theme="dark"] {
+  --bg-main: #020617;
+  --bg-card: #1e293b;
+  --bg-sidebar: #020617;
+  --text-main: #f1f5f9;
+  --text-muted: #94a3b8;
+  --border-color: #334155;
+}
+
+/* ===============================
    Global Reset & Base
 ================================ */
 * {
@@ -10,8 +31,8 @@
 
 body {
   min-height: 100vh;
-  background: linear-gradient(135deg, #eef2ff, #f8fafc);
-  color: #1f2937;
+  background: var(--bg-main);
+  color: var(--text-main);
 }
 
 /* Links */
@@ -31,7 +52,7 @@ a {
 }
 
 .auth-card {
-  background: white;
+  background: var(--bg-card);
   width: 360px;
   padding: 32px;
   border-radius: 14px;
@@ -50,7 +71,7 @@ a {
   padding: 12px 14px;
   margin-bottom: 14px;
   border-radius: 8px;
-  border: 1px solid #d1d5db;
+  border: 1px solid var(--border-color);
   font-size: 14px;
 }
 
@@ -69,7 +90,6 @@ a {
   font-weight: 600;
   font-size: 15px;
   cursor: pointer;
-  transition: background 0.2s ease;
 }
 
 .auth-card button:hover {
@@ -98,7 +118,7 @@ a {
 /* Sidebar */
 .sidebar {
   width: 240px;
-  background: #0f172a;
+  background: var(--bg-sidebar);
   color: white;
   padding: 28px 22px;
 }
@@ -110,7 +130,7 @@ a {
 
 .sidebar .subtitle {
   font-size: 13px;
-  color: #94a3b8;
+  color: var(--text-muted);
   margin-bottom: 30px;
 }
 
@@ -121,7 +141,6 @@ a {
   border-radius: 8px;
   color: #cbd5f5;
   font-weight: 500;
-  transition: background 0.2s ease, color 0.2s ease;
 }
 
 .sidebar a:hover {
@@ -137,19 +156,19 @@ a {
 /* Main Area */
 .main {
   flex: 1;
-  background: #f8fafc;
+  background: var(--bg-main);
   display: flex;
   flex-direction: column;
 }
 
 /* Navbar */
 .navbar {
-  background: white;
+  background: var(--bg-card);
   padding: 14px 25px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .navbar h3 {
@@ -159,7 +178,21 @@ a {
 
 .navbar-subtitle {
   font-size: 13px;
-  color: #6b7280;
+  color: var(--text-muted);
+}
+
+/* Theme Button */
+.theme-btn {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  padding: 6px 10px;
+  border-radius: 6px;
+  color: var(--text-main);
+  cursor: pointer;
+}
+
+.theme-btn:hover {
+  background: rgba(0, 0, 0, 0.05);
 }
 
 /* Logout Button */
@@ -205,7 +238,7 @@ a {
 }
 
 .stat-card {
-  background: white;
+  background: var(--bg-card);
   padding: 22px;
   border-radius: 14px;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
@@ -213,7 +246,7 @@ a {
 
 .stat-title {
   font-size: 14px;
-  color: #6b7280;
+  color: var(--text-muted);
 }
 
 .stat-value {
@@ -231,16 +264,14 @@ a {
 }
 
 .action-card {
-  background: white;
+  background: var(--bg-card);
   padding: 22px;
   border-radius: 14px;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .action-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.08);
 }
 
 .action-icon {
@@ -248,18 +279,13 @@ a {
   margin-bottom: 10px;
 }
 
-.action-card h4 {
-  margin-bottom: 6px;
-  font-size: 16px;
-}
-
 .action-card p {
   font-size: 14px;
-  color: #6b7280;
+  color: var(--text-muted);
 }
 
 /* ===============================
-   Cards / Lists (Reports, Vitals)
+   Cards / Lists
 ================================ */
 .card-grid {
   display: grid;
@@ -269,15 +295,17 @@ a {
 }
 
 .card {
-  background: white;
+  background: var(--bg-card);
   padding: 20px;
   border-radius: 14px;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
 }
 
-/* ===============================
-   FORMS INSIDE CARDS (IMPORTANT)
-================================ */
+.card h4 {
+  margin-bottom: 8px;
+}
+
+/* Forms */
 .card form {
   display: flex;
   flex-direction: column;
@@ -287,93 +315,25 @@ a {
 .card input {
   padding: 12px 14px;
   border-radius: 8px;
-  border: 1px solid #d1d5db;
-  font-size: 14px;
-}
-
-.card input:focus {
-  outline: none;
-  border-color: #2563eb;
+  border: 1px solid var(--border-color);
 }
 
 .card button {
-  margin-top: 8px;
   padding: 12px;
   border-radius: 8px;
   background: #2563eb;
   color: white;
   border: none;
   font-weight: 600;
-  font-size: 14px;
-  cursor: pointer;
-}
-
-.card button:hover {
-  background: #1d4ed8;
 }
 
 .card button:disabled {
   background: #9ca3af;
-  cursor: not-allowed;
-}
-
-/* ===============================
-   Utility
-================================ */
-.text-center {
-  text-align: center;
-}
-
-.mt-20 {
-  margin-top: 20px;
 }
 
 /* ===============================
    Report Actions
 ================================ */
-
-.report-card {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.report-link {
-  color: #2563eb;
-  font-weight: 500;
-  margin-top: 6px;
-}
-
-/* Share */
-.share-box {
-  display: flex;
-  gap: 8px;
-  margin-top: 8px;
-}
-
-.share-box input {
-  flex: 1;
-  padding: 8px;
-  border-radius: 6px;
-  border: 1px solid #d1d5db;
-  font-size: 14px;
-}
-
-.share-btn {
-  background: #2563eb;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 14px;
-}
-
-.share-btn:hover {
-  background: #1d4ed8;
-}
-
-/* Delete */
 .delete-btn {
   margin-top: 10px;
   background: #ef4444;
@@ -389,11 +349,13 @@ a {
   background: #dc2626;
 }
 
-
-canvas{
-  max-height:280px;
+/* ===============================
+   Utility
+================================ */
+.mt-20 {
+  margin-top: 20px;
 }
 
-.card h4 {
-  margin-bottom: 8px;
+canvas {
+  max-height: 280px;
 }
