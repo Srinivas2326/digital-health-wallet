@@ -6,22 +6,23 @@ export default function MyReports() {
   const [reports, setReports] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // 🔹 Filters (UNCHANGED)
+  // Filters
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
   const [type, setType] = useState("");
   const [vitals, setVitals] = useState("");
 
-  // 🔹 Share
+  // Share
   const [shareEmail, setShareEmail] = useState({});
   const [success, setSuccess] = useState("");
 
+  // ================= FETCH REPORTS =================
   const fetchReports = async () => {
     try {
       const res = await api.get("/reports");
       setReports(res.data.reports || []);
-    } catch {
-      console.error("Failed to fetch reports");
+    } catch (err) {
+      console.error("Failed to fetch reports", err);
     } finally {
       setLoading(false);
     }
@@ -31,7 +32,7 @@ export default function MyReports() {
     fetchReports();
   }, []);
 
-  // 🔹 APPLY FILTER (UNCHANGED)
+  // ================= APPLY FILTER =================
   const applyFilter = async () => {
     try {
       const res = await api.get("/reports/filter", {
@@ -43,7 +44,7 @@ export default function MyReports() {
     }
   };
 
-  // 🔹 DELETE REPORT (UNCHANGED)
+  // ================= DELETE REPORT =================
   const deleteReport = async (id) => {
     if (!window.confirm("Are you sure you want to delete this report?")) return;
 
@@ -55,7 +56,7 @@ export default function MyReports() {
     }
   };
 
-  // 🔹 SHARE REPORT (NEW)
+  // ================= SHARE REPORT =================
   const shareReport = async (reportId) => {
     const email = shareEmail[reportId];
     if (!email) {
@@ -79,7 +80,7 @@ export default function MyReports() {
     <Layout>
       <h2 className="page-title">My Reports</h2>
 
-      {/* ================= FILTER SECTION (UNCHANGED) ================= */}
+      {/* ================= FILTER SECTION ================= */}
       <div className="card mt-20">
         <h4 style={{ marginBottom: "10px" }}>Filter Reports</h4>
 
@@ -110,7 +111,7 @@ export default function MyReports() {
           Apply Filter
         </button>
       </div>
-      {/* ============================================================= */}
+      {/* ================================================== */}
 
       {success && (
         <p style={{ color: "#16a34a", marginTop: "10px" }}>{success}</p>
@@ -122,60 +123,52 @@ export default function MyReports() {
         <p className="mt-20">No reports found.</p>
       ) : (
         <div className="card-grid mt-20">
-          {reports.map((r) => {
-            const fileUrl = `http://localhost:5000/${r.filePath.replace(
-              /^\/?/,
-              ""
-            )}`;
+          {reports.map((r) => (
+            <div className="card" key={r.id}>
+              <h4>{r.type}</h4>
+              <p>Date: {r.reportDate}</p>
+              <p>Vitals: {r.vitals || "N/A"}</p>
 
-            return (
-              <div className="card" key={r.id}>
-                <h4>{r.type}</h4>
-                <p>Date: {r.reportDate}</p>
-                <p>Vitals: {r.vitals || "N/A"}</p>
+              {/* ✅ FIXED: DIRECT CLOUDINARY URL */}
+              <a
+                href={r.filePath}
+                target="_blank"
+                rel="noreferrer"
+                className="link-primary"
+              >
+                View / Download Report
+              </a>
 
-                {/* VIEW */}
-                <a
-                  href={fileUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="link-primary"
-                >
-                  View / Download Report
-                </a>
+              {/* ================= SHARE ================= */}
+              <input
+                type="email"
+                placeholder="Share with email"
+                value={shareEmail[r.id] || ""}
+                onChange={(e) =>
+                  setShareEmail({
+                    ...shareEmail,
+                    [r.id]: e.target.value,
+                  })
+                }
+                style={{ marginTop: "10px" }}
+              />
 
-                {/* ================= SHARE (NEW) ================= */}
-                <input
-                  type="email"
-                  placeholder="Share with email"
-                  value={shareEmail[r.id] || ""}
-                  onChange={(e) =>
-                    setShareEmail({
-                      ...shareEmail,
-                      [r.id]: e.target.value,
-                    })
-                  }
-                  style={{ marginTop: "10px" }}
-                />
+              <button
+                className="share-btn"
+                onClick={() => shareReport(r.id)}
+              >
+                Share Report
+              </button>
 
-                <button
-                  className="share-btn"
-                  onClick={() => shareReport(r.id)}
-                >
-                  Share Report
-                </button>
-                {/* =============================================== */}
-
-                {/* DELETE */}
-                <button
-                  className="delete-btn"
-                  onClick={() => deleteReport(r.id)}
-                >
-                  Delete Report
-                </button>
-              </div>
-            );
-          })}
+              {/* ================= DELETE ================= */}
+              <button
+                className="delete-btn"
+                onClick={() => deleteReport(r.id)}
+              >
+                Delete Report
+              </button>
+            </div>
+          ))}
         </div>
       )}
     </Layout>
