@@ -1,11 +1,6 @@
-const path = require("path");
 const express = require("express");
 const cors = require("cors");
-
-// Load env variables
-require("dotenv").config({
-  path: path.resolve(__dirname, "../.env"),
-});
+require("dotenv").config();
 
 const app = express();
 
@@ -13,17 +8,16 @@ const app = express();
 require("./config/db");
 
 // ===============================
-// ✅ CORS CONFIG (IMPORTANT FIX)
+// CORS CONFIG
 // ===============================
 const allowedOrigins = [
-  "http://localhost:5173", // local dev
-  "https://digital-health-wallet-ochre.vercel.app", // vercel frontend
+  "http://localhost:5173",
+  "https://digital-health-wallet-ochre.vercel.app",
 ];
 
 app.use(
   cors({
     origin: function (origin, callback) {
-      // allow requests with no origin (Postman, curl)
       if (!origin) return callback(null, true);
 
       if (allowedOrigins.includes(origin)) {
@@ -41,13 +35,7 @@ app.use(
 // ===============================
 app.use(express.json());
 
-// ===============================
-// Static Files (Uploaded Reports)
-// ===============================
-app.use(
-  "/uploads",
-  express.static(path.join(__dirname, "uploads"))
-);
+// ❌ NO STATIC /uploads (Cloudinary used)
 
 // ===============================
 // Routes
