@@ -25,9 +25,7 @@ const allowedOrigins = [
 app.use(
   cors({
     origin: (origin, callback) => {
-      // Allow server-to-server & Postman
       if (!origin) return callback(null, true);
-
       if (allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
@@ -44,9 +42,11 @@ app.use(
 app.use(express.json());
 
 // ===============================
-// Static Files (Uploaded Reports)
+// Static Files (Uploaded Reports) ✅ FIXED
 // ===============================
-const uploadsPath = path.resolve(__dirname, "uploads");
+const uploadsPath = path.join(__dirname, "uploads");
+console.log("📂 Serving uploads from:", uploadsPath);
+
 app.use("/uploads", express.static(uploadsPath));
 
 // ===============================
@@ -75,5 +75,4 @@ const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
-  console.log("📂 Serving uploads from:", uploadsPath);
 });
