@@ -21,21 +21,26 @@ export default function UploadReport() {
     setError("");
     setSuccess("");
 
-    // Validation
+    // ✅ Frontend validation
     if (!form.reportType || !form.reportDate || !form.report) {
       setError("Report type, date, and file are required");
       return;
     }
 
-    const data = new FormData();
-    data.append("report", form.report);
-    data.append("reportType", form.reportType);
-    data.append("reportDate", form.reportDate);
-    data.append("vitals", form.vitals);
+    const formData = new FormData();
+    formData.append("report", form.report); // 🔥 MUST be "report"
+    formData.append("reportType", form.reportType);
+    formData.append("reportDate", form.reportDate);
+    formData.append("vitals", form.vitals || "");
 
     try {
       setLoading(true);
-      await api.post("/reports/upload", data);
+
+      await api.post("/reports/upload", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
       setSuccess("Report uploaded successfully 🎉");
 
@@ -51,7 +56,12 @@ export default function UploadReport() {
         fileRef.current.value = "";
       }
     } catch (err) {
-      setError("Failed to upload report. Please try again.");
+      console.error("Upload error:", err.response?.data || err.message);
+
+      setError(
+        err.response?.data?.message ||
+          "Failed to upload report. Please try again."
+      );
     } finally {
       setLoading(false);
     }
@@ -102,6 +112,7 @@ export default function UploadReport() {
           <input
             type="file"
             ref={fileRef}
+            accept=".jpg,.jpeg,.png,.pdf"
             onChange={(e) =>
               setForm({ ...form, report: e.target.files[0] })
             }

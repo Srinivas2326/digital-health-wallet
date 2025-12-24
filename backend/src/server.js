@@ -4,7 +4,9 @@ require("dotenv").config();
 
 const app = express();
 
+// ===============================
 // DB init
+// ===============================
 require("./config/db");
 
 // ===============================
@@ -35,7 +37,6 @@ app.use(
 // ===============================
 app.use(express.json());
 
-// ❌ NO STATIC /uploads (Cloudinary used)
 
 // ===============================
 // Routes
