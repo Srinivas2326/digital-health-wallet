@@ -1,7 +1,7 @@
 const sqlite3 = require("sqlite3").verbose();
 const path = require("path");
 
-// ✅ Absolute DB path (VERY IMPORTANT)
+// ✅ Absolute DB path (IMPORTANT for Render)
 const dbPath = path.join(__dirname, "../healthwallet.db");
 
 const db = new sqlite3.Database(dbPath, (err) => {
@@ -12,8 +12,8 @@ const db = new sqlite3.Database(dbPath, (err) => {
   }
 });
 
-// ✅ Enable foreign keys
 db.serialize(() => {
+  // Enable foreign keys
   db.run(`PRAGMA foreign_keys = ON`);
 
   // =========================
@@ -29,7 +29,7 @@ db.serialize(() => {
   `);
 
   // =========================
-  // REPORTS TABLE
+  // REPORTS TABLE (BASE)
   // =========================
   db.run(`
     CREATE TABLE IF NOT EXISTS reports (
@@ -43,6 +43,38 @@ db.serialize(() => {
       FOREIGN KEY (userId) REFERENCES users(id) ON DELETE CASCADE
     )
   `);
+
+  // =========================
+  // 🔥 AUTO-MIGRATION: ADD publicId COLUMN IF MISSING
+  // =========================
+  db.all(`PRAGMA table_info(reports);`, (err, columns) => {
+    if (err) {
+      console.error("❌ Failed to read reports schema:", err.message);
+      return;
+    }
+
+    const hasPublicId = columns.some(
+      (col) => col.name === "publicId"
+    );
+
+    if (!hasPublicId) {
+      db.run(
+        `ALTER TABLE reports ADD COLUMN publicId TEXT`,
+        (alterErr) => {
+          if (alterErr) {
+            console.error(
+              "❌ Failed to add publicId column:",
+              alterErr.message
+            );
+          } else {
+            console.log("✅ publicId column added to reports table");
+          }
+        }
+      );
+    } else {
+      console.log("ℹ️ publicId column already exists");
+    }
+  });
 
   // =========================
   // VITALS TABLE
