@@ -1,10 +1,9 @@
 const db = require("../config/db");
-const fs = require("fs");
-const path = require("path");
+const cloudinary = require("../config/cloudinary");
 
-
-//   UPLOAD MEDICAL REPORT
-
+/* ======================================================
+   UPLOAD MEDICAL REPORT
+====================================================== */
 exports.uploadReport = (req, res) => {
   try {
     const { reportType, reportDate, vitals } = req.body;
@@ -20,13 +19,16 @@ exports.uploadReport = (req, res) => {
       });
     }
 
-    // Store public path (IMPORTANT)
-    const filePath = `uploads/reports/${req.file.filename}`;
+    // ✅ Cloudinary file URL
+    const filePath = req.file.path;
+
+    // ✅ Cloudinary public_id (needed for delete)
+    const publicId = req.file.filename || req.file.public_id;
 
     db.run(
       `
-      INSERT INTO reports (userId, type, reportDate, vitals, filePath)
-      VALUES (?,?,?,?,?)
+      INSERT INTO reports (userId, type, reportDate, vitals, filePath, publicId)
+      VALUES (?,?,?,?,?,?)
       `,
       [
         req.user.id,
@@ -34,6 +36,7 @@ exports.uploadReport = (req, res) => {
         reportDate,
         vitals || null,
         filePath,
+        publicId,
       ],
       function (err) {
         if (err) {
@@ -46,6 +49,7 @@ exports.uploadReport = (req, res) => {
         return res.status(201).json({
           message: "Report uploaded successfully",
           reportId: this.lastID,
+          filePath,
         });
       }
     );
@@ -57,9 +61,9 @@ exports.uploadReport = (req, res) => {
   }
 };
 
-
-//   GET ALL REPORTS (LOGGED-IN USER)
-
+/* ======================================================
+   GET ALL REPORTS (LOGGED-IN USER)
+====================================================== */
 exports.getMyReports = (req, res) => {
   try {
     db.all(
@@ -98,9 +102,9 @@ exports.getMyReports = (req, res) => {
   }
 };
 
-
-// FILTER REPORTS
-
+/* ======================================================
+   FILTER REPORTS
+====================================================== */
 exports.filterReports = (req, res) => {
   try {
     const { fromDate, toDate, type, vitals } = req.query;
@@ -162,9 +166,9 @@ exports.filterReports = (req, res) => {
   }
 };
 
-
-  // DELETE REPORT (OWNER ONLY)
-
+/* ======================================================
+   DELETE REPORT (OWNER ONLY)
+====================================================== */
 exports.deleteReport = (req, res) => {
   const reportId = req.params.id;
   const userId = req.user.id;
@@ -173,7 +177,7 @@ exports.deleteReport = (req, res) => {
   db.get(
     "SELECT * FROM reports WHERE id = ? AND userId = ?",
     [reportId, userId],
-    (err, report) => {
+    async (err, report) => {
       if (err) {
         return res.status(500).json({ message: "Database error" });
       }
@@ -184,19 +188,15 @@ exports.deleteReport = (req, res) => {
           .json({ message: "Report not found or unauthorized" });
       }
 
-      // Delete file from disk
-      const absolutePath = path.join(
-        __dirname,
-        "..",
-        report.filePath
-      );
-
-      fs.unlink(absolutePath, (fsErr) => {
-        if (fsErr) {
-          console.warn("File delete warning:", fsErr.message);
+      try {
+        // ✅ Delete from Cloudinary
+        if (report.publicId) {
+          await cloudinary.uploader.destroy(report.publicId, {
+            resource_type: "auto",
+          });
         }
 
-        // Delete DB record
+        // ✅ Delete DB record
         db.run(
           "DELETE FROM reports WHERE id = ?",
           [reportId],
@@ -212,7 +212,12 @@ exports.deleteReport = (req, res) => {
             });
           }
         );
-      });
+      } catch (cloudErr) {
+        return res.status(500).json({
+          message: "Failed to delete report from cloud",
+          error: cloudErr.message,
+        });
+      }
     }
   );
 };
