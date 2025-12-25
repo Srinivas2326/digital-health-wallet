@@ -80,33 +80,24 @@ export default function MyReports() {
     <Layout>
       <h2 className="page-title">My Reports</h2>
 
-      {/* ================= FILTER ================= */}
+      {/* ================= FILTER SECTION ================= */}
       <div className="card mt-20">
-        <h4 className="card-title">Filter Reports</h4>
+        <h4>Filter Reports</h4>
 
         <div className="filter-grid">
           <input type="date" value={fromDate} onChange={(e) => setFromDate(e.target.value)} />
           <input type="date" value={toDate} onChange={(e) => setToDate(e.target.value)} />
-          <input
-            placeholder="Report Type (Blood, X-Ray)"
-            value={type}
-            onChange={(e) => setType(e.target.value)}
-          />
-          <input
-            placeholder="Vitals keyword (BP, Sugar)"
-            value={vitals}
-            onChange={(e) => setVitals(e.target.value)}
-          />
+          <input placeholder="Report Type (Blood, X-Ray)" value={type} onChange={(e) => setType(e.target.value)} />
+          <input placeholder="Vitals keyword (BP, Sugar)" value={vitals} onChange={(e) => setVitals(e.target.value)} />
         </div>
 
-        <button className="btn-primary mt-10" onClick={applyFilter}>
+        <button className="primary-btn mt-10" onClick={applyFilter}>
           Apply Filter
         </button>
       </div>
 
       {success && <p className="success-text mt-10">{success}</p>}
 
-      {/* ================= REPORTS ================= */}
       {loading ? (
         <p className="mt-20">Loading reports...</p>
       ) : reports.length === 0 ? (
@@ -114,49 +105,51 @@ export default function MyReports() {
       ) : (
         <div className="card-grid mt-20">
           {reports.map((r) => (
-            <div className="card report-card" key={r.id}>
+            <div className="card" key={r.id}>
               <h4>{r.type}</h4>
               <p>Date: {r.reportDate}</p>
               <p>Vitals: {r.vitals || "N/A"}</p>
 
-              {/* VIEW / DOWNLOAD BUTTON */}
-              <a
-                href={r.filePath}
-                target="_blank"
-                rel="noreferrer"
-                className="btn-outline mt-10"
-              >
-                View / Download Report
-              </a>
+              {/* ===== ACTION BUTTONS ===== */}
+              <div className="report-actions">
+                <a
+                  href={r.filePath}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="btn outline-btn"
+                >
+                  View / Download
+                </a>
 
-              {/* SHARE */}
-              <input
-                type="email"
-                placeholder="Share with email"
-                value={shareEmail[r.id] || ""}
-                onChange={(e) =>
-                  setShareEmail({
-                    ...shareEmail,
-                    [r.id]: e.target.value,
-                  })
-                }
-                className="mt-10"
-              />
+                <button
+                  className="btn danger-btn"
+                  onClick={() => deleteReport(r.id)}
+                >
+                  Delete
+                </button>
+              </div>
 
-              <button
-                className="btn-secondary mt-6"
-                onClick={() => shareReport(r.id)}
-              >
-                Share Report
-              </button>
+              {/* ===== SHARE ===== */}
+              <div className="share-section">
+                <input
+                  type="email"
+                  placeholder="Share with email"
+                  value={shareEmail[r.id] || ""}
+                  onChange={(e) =>
+                    setShareEmail({
+                      ...shareEmail,
+                      [r.id]: e.target.value,
+                    })
+                  }
+                />
 
-              {/* DELETE */}
-              <button
-                className="btn-danger mt-6"
-                onClick={() => deleteReport(r.id)}
-              >
-                Delete Report
-              </button>
+                <button
+                  className="btn secondary-btn"
+                  onClick={() => shareReport(r.id)}
+                >
+                  Share
+                </button>
+              </div>
             </div>
           ))}
         </div>

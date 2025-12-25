@@ -16,17 +16,15 @@ export default function Navbar() {
     <header className="navbar">
       {/* LEFT SECTION */}
       <div className="navbar-left">
-        <h3>Digital Health Wallet</h3>
-        <span className="navbar-subtitle">
-          Secure Health Records
-        </span>
+        <h3 className="navbar-title">Digital Health Wallet</h3>
+        <span className="navbar-subtitle">Secure Health Records</span>
       </div>
 
       {/* RIGHT SECTION */}
       <div className="navbar-right">
-        {/* USER NAME + PROFILE */}
-        <Link to="/profile" className="nav-link">
-          👤 {user?.name || "Profile"}
+        {/* PROFILE */}
+        <Link to="/profile" className="nav-link profile-link">
+          👤 <span>{user?.name || "Profile"}</span>
         </Link>
 
         {/* THEME TOGGLE */}
