@@ -24,10 +24,10 @@ ChartJS.register(
 );
 
 /* =========================
-   DATE FORMAT FIX (IMPORTANT)
+   SQLITE DATE FIX
 ========================= */
 const parseSQLiteDate = (dateStr) => {
-  // Convert: "YYYY-MM-DD HH:mm:ss" → valid JS date
+  if (!dateStr) return null;
   return new Date(dateStr.replace(" ", "T"));
 };
 
@@ -51,6 +51,10 @@ export default function MyVitals() {
     }
   };
 
+  useEffect(() => {
+    fetchVitals();
+  }, []);
+
   /* =========================
      ADD VITAL
   ========================= */
@@ -58,16 +62,21 @@ export default function MyVitals() {
     setError("");
     setSuccess("");
 
-    if (!type || !value) {
+    if (!type || value === "") {
       setError("Vital type and value are required");
+      return;
+    }
+
+    if (isNaN(value)) {
+      setError("Please enter a numeric value only");
       return;
     }
 
     try {
       setLoading(true);
       await api.post("/vitals", {
-        vitalType: type,
-        value,
+        vitalType: type.trim(),
+        value: Number(value),
       });
 
       setSuccess("Vital added successfully ❤️");
@@ -81,22 +90,17 @@ export default function MyVitals() {
     }
   };
 
-  useEffect(() => {
-    fetchVitals();
-  }, []);
-
   /* =========================
      BUILD CHART DATA
   ========================= */
   const buildChartData = (vitalType) => {
-    // Filter + validate numeric values
     const filtered = vitals
       .filter(
         (v) =>
           v.vitalType.toLowerCase() === vitalType.toLowerCase() &&
           !isNaN(parseFloat(v.value))
       )
-      // SORT BY DATE (CRITICAL)
+      // SORT BY DATE
       .sort(
         (a, b) =>
           parseSQLiteDate(a.recordedAt) -
@@ -113,7 +117,7 @@ export default function MyVitals() {
       datasets: [
         {
           label: vitalType,
-          data: filtered.map((v) => parseFloat(v.value)),
+          data: filtered.map((v) => Number(v.value)),
           borderColor:
             vitalType.toLowerCase() === "bp" ? "#ef4444" : "#2563eb",
           backgroundColor: "rgba(0,0,0,0)",
@@ -149,9 +153,20 @@ export default function MyVitals() {
         />
 
         <input
-          placeholder="Value (120, 95)"
+          type="number"
+          placeholder="Value (numbers only)"
           value={value}
           onChange={(e) => setValue(e.target.value)}
+          onKeyDown={(e) => {
+            if (
+              e.key === "e" ||
+              e.key === "E" ||
+              e.key === "+" ||
+              e.key === "-"
+            ) {
+              e.preventDefault();
+            }
+          }}
         />
 
         <button onClick={addVital} disabled={loading}>
@@ -166,14 +181,12 @@ export default function MyVitals() {
         ) : (
           vitals.map((v) => (
             <div className="card" key={v.id}>
-              <h4 style={{ marginBottom: "6px" }}>
-                ❤️ {v.vitalType}
-              </h4>
+              <h4>❤️ {v.vitalType}</h4>
               <p style={{ fontSize: "18px", fontWeight: "600" }}>
                 {v.value}
               </p>
               <p style={{ fontSize: "12px", color: "#6b7280" }}>
-                {parseSQLiteDate(v.recordedAt).toLocaleString()}
+                {parseSQLiteDate(v.recordedAt)?.toLocaleString()}
               </p>
             </div>
           ))
