@@ -14,15 +14,14 @@ export default function Register() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // Email regex (same logic as backend)
-const emailRegex =
-  /^[a-zA-Z0-9.]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  // STRICT email regex (lowercase + numbers + dot only)
+  const emailRegex = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]{2,}$/;
 
   const submit = async (e) => {
     e.preventDefault();
     setError("");
 
-    const { name, email, password } = form;
+    let { name, email, password } = form;
 
     // ================= FRONTEND VALIDATION =================
     if (!name || !email || !password) {
@@ -30,8 +29,13 @@ const emailRegex =
       return;
     }
 
+    // Force lowercase BEFORE validation
+    email = email.toLowerCase();
+
     if (!emailRegex.test(email)) {
-      setError("Please enter a valid email address");
+      setError(
+        "Email must be lowercase and contain only letters, numbers, and dots"
+      );
       return;
     }
 
@@ -44,7 +48,7 @@ const emailRegex =
       setLoading(true);
       await api.post("/auth/register", {
         name: name.trim(),
-        email: email.toLowerCase(),
+        email,
         password,
       });
 
@@ -78,7 +82,7 @@ const emailRegex =
         />
 
         <input
-          placeholder="Email"
+          placeholder="Email (lowercase only)"
           value={form.email}
           onChange={(e) =>
             setForm({ ...form, email: e.target.value })
