@@ -15,7 +15,8 @@ export default function Register() {
   const [loading, setLoading] = useState(false);
 
   // Email regex (same logic as backend)
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const emailRegex =
+  /^[a-zA-Z0-9.]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
   const submit = async (e) => {
     e.preventDefault();

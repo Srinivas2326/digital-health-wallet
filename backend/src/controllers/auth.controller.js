@@ -5,7 +5,8 @@ const jwt = require("jsonwebtoken");
 /* =========================
    EMAIL VALIDATION REGEX
 ========================= */
-const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const emailRegex =
+  /^[a-zA-Z0-9.]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
 /* =========================
    REGISTER USER
