@@ -14,7 +14,7 @@ export default function Navbar() {
 
   return (
     <header className="navbar">
-      {/* LEFT */}
+      {/* LEFT SECTION */}
       <div className="navbar-left">
         <h3>Digital Health Wallet</h3>
         <span className="navbar-subtitle">
@@ -22,11 +22,11 @@ export default function Navbar() {
         </span>
       </div>
 
-      {/* RIGHT */}
+      {/* RIGHT SECTION */}
       <div className="navbar-right">
-        {/* PROFILE LINK */}
+        {/* USER NAME + PROFILE */}
         <Link to="/profile" className="nav-link">
-          👤 Profile
+          👤 {user?.name || "Profile"}
         </Link>
 
         {/* THEME TOGGLE */}

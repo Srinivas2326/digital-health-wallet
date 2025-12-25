@@ -16,7 +16,7 @@ export default function MyReports() {
   const [shareEmail, setShareEmail] = useState({});
   const [success, setSuccess] = useState("");
 
-  // ================= FETCH REPORTS =================
+  /* ================= FETCH REPORTS ================= */
   const fetchReports = async () => {
     try {
       const res = await api.get("/reports");
@@ -32,7 +32,7 @@ export default function MyReports() {
     fetchReports();
   }, []);
 
-  // ================= APPLY FILTER =================
+  /* ================= APPLY FILTER ================= */
   const applyFilter = async () => {
     try {
       const res = await api.get("/reports/filter", {
@@ -44,7 +44,7 @@ export default function MyReports() {
     }
   };
 
-  // ================= DELETE REPORT =================
+  /* ================= DELETE REPORT ================= */
   const deleteReport = async (id) => {
     if (!window.confirm("Are you sure you want to delete this report?")) return;
 
@@ -56,7 +56,7 @@ export default function MyReports() {
     }
   };
 
-  // ================= SHARE REPORT =================
+  /* ================= SHARE REPORT ================= */
   const shareReport = async (reportId) => {
     const email = shareEmail[reportId];
     if (!email) {
@@ -80,21 +80,13 @@ export default function MyReports() {
     <Layout>
       <h2 className="page-title">My Reports</h2>
 
-      {/* ================= FILTER SECTION ================= */}
+      {/* ================= FILTER ================= */}
       <div className="card mt-20">
-        <h4 style={{ marginBottom: "10px" }}>Filter Reports</h4>
+        <h4 className="card-title">Filter Reports</h4>
 
         <div className="filter-grid">
-          <input
-            type="date"
-            value={fromDate}
-            onChange={(e) => setFromDate(e.target.value)}
-          />
-          <input
-            type="date"
-            value={toDate}
-            onChange={(e) => setToDate(e.target.value)}
-          />
+          <input type="date" value={fromDate} onChange={(e) => setFromDate(e.target.value)} />
+          <input type="date" value={toDate} onChange={(e) => setToDate(e.target.value)} />
           <input
             placeholder="Report Type (Blood, X-Ray)"
             value={type}
@@ -107,16 +99,14 @@ export default function MyReports() {
           />
         </div>
 
-        <button style={{ marginTop: "10px" }} onClick={applyFilter}>
+        <button className="btn-primary mt-10" onClick={applyFilter}>
           Apply Filter
         </button>
       </div>
-      {/* ================================================== */}
 
-      {success && (
-        <p style={{ color: "#16a34a", marginTop: "10px" }}>{success}</p>
-      )}
+      {success && <p className="success-text mt-10">{success}</p>}
 
+      {/* ================= REPORTS ================= */}
       {loading ? (
         <p className="mt-20">Loading reports...</p>
       ) : reports.length === 0 ? (
@@ -124,22 +114,22 @@ export default function MyReports() {
       ) : (
         <div className="card-grid mt-20">
           {reports.map((r) => (
-            <div className="card" key={r.id}>
+            <div className="card report-card" key={r.id}>
               <h4>{r.type}</h4>
               <p>Date: {r.reportDate}</p>
               <p>Vitals: {r.vitals || "N/A"}</p>
 
-              {/* ✅ FIXED: DIRECT CLOUDINARY URL */}
+              {/* VIEW / DOWNLOAD BUTTON */}
               <a
                 href={r.filePath}
                 target="_blank"
                 rel="noreferrer"
-                className="link-primary"
+                className="btn-outline mt-10"
               >
                 View / Download Report
               </a>
 
-              {/* ================= SHARE ================= */}
+              {/* SHARE */}
               <input
                 type="email"
                 placeholder="Share with email"
@@ -150,19 +140,19 @@ export default function MyReports() {
                     [r.id]: e.target.value,
                   })
                 }
-                style={{ marginTop: "10px" }}
+                className="mt-10"
               />
 
               <button
-                className="share-btn"
+                className="btn-secondary mt-6"
                 onClick={() => shareReport(r.id)}
               >
                 Share Report
               </button>
 
-              {/* ================= DELETE ================= */}
+              {/* DELETE */}
               <button
-                className="delete-btn"
+                className="btn-danger mt-6"
                 onClick={() => deleteReport(r.id)}
               >
                 Delete Report
