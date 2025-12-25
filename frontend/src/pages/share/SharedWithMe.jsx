@@ -60,8 +60,9 @@ export default function SharedWithMe() {
                 </p>
               )}
 
+              {/* ✅ FIX: OPEN CLOUDINARY URL DIRECTLY */}
               <a
-                href={`http://localhost:5000/${r.filePath}`}
+                href={r.filePath}
                 target="_blank"
                 rel="noreferrer"
                 style={{
@@ -71,7 +72,7 @@ export default function SharedWithMe() {
                   fontWeight: 500,
                 }}
               >
-                🔍 View Report
+                🔍 View / Download Report
               </a>
             </div>
           ))}
