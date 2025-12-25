@@ -5,7 +5,7 @@ require("dotenv").config();
 const app = express();
 
 // ===============================
-// DB init
+// DB INIT
 // ===============================
 require("./config/db");
 
@@ -20,6 +20,7 @@ const allowedOrigins = [
 app.use(
   cors({
     origin: function (origin, callback) {
+      // Allow server-to-server / Postman
       if (!origin) return callback(null, true);
 
       if (allowedOrigins.includes(origin)) {
@@ -33,13 +34,12 @@ app.use(
 );
 
 // ===============================
-// Middlewares
+// MIDDLEWARES
 // ===============================
 app.use(express.json());
 
-
 // ===============================
-// Routes
+// ROUTES
 // ===============================
 app.use("/api/auth", require("./routes/auth.routes"));
 app.use("/api/protected", require("./routes/protected.routes"));
@@ -47,8 +47,11 @@ app.use("/api/reports", require("./routes/report.routes"));
 app.use("/api/vitals", require("./routes/vitals.routes"));
 app.use("/api/share", require("./routes/share.routes"));
 
+// ✅ DASHBOARD ROUTE (NEW & IMPORTANT)
+app.use("/api/dashboard", require("./routes/dashboard.routes"));
+
 // ===============================
-// Health Check
+// HEALTH CHECK
 // ===============================
 app.get("/", (req, res) => {
   res.json({
@@ -58,7 +61,7 @@ app.get("/", (req, res) => {
 });
 
 // ===============================
-// Start Server
+// START SERVER
 // ===============================
 const PORT = process.env.PORT || 5000;
 

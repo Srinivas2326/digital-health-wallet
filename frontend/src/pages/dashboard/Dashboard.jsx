@@ -1,20 +1,55 @@
-import Layout from "../../components/common/Layout";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import api from "../../api/axios";
+import Layout from "../../components/common/Layout";
 
 export default function Dashboard() {
+  const [stats, setStats] = useState({
+    totalReports: 0,
+    totalVitals: 0,
+    sharedAccess: 0,
+  });
+
+  const [loading, setLoading] = useState(true);
+
+  // ================= FETCH DASHBOARD STATS =================
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const res = await api.get("/dashboard");
+        setStats(res.data);
+      } catch (err) {
+        console.error("Failed to load dashboard stats", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchStats();
+  }, []);
+
   return (
     <Layout>
       <div className="dashboard">
         <h2 className="page-title">Dashboard</h2>
 
-        {/* Top Stats */}
+        {/* ================= TOP STATS ================= */}
         <div className="stats-grid">
-          <StatCard title="Total Reports" value="📄 12" />
-          <StatCard title="Vitals Records" value="❤️ 8" />
-          <StatCard title="Shared Access" value="🔗 3" />
+          <StatCard
+            title="Total Reports"
+            value={loading ? "…" : `📄 ${stats.totalReports}`}
+          />
+          <StatCard
+            title="Vitals Records"
+            value={loading ? "…" : `❤️ ${stats.totalVitals}`}
+          />
+          <StatCard
+            title="Shared Access"
+            value={loading ? "…" : `🔗 ${stats.sharedAccess}`}
+          />
         </div>
 
-        {/* Quick Actions */}
+        {/* ================= QUICK ACTIONS ================= */}
         <h3 className="section-title">Quick Actions</h3>
 
         <div className="action-grid">
@@ -48,7 +83,7 @@ export default function Dashboard() {
   );
 }
 
-/* ---------- Components ---------- */
+/* ================= COMPONENTS ================= */
 
 function StatCard({ title, value }) {
   return (
