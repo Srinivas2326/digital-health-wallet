@@ -75,7 +75,21 @@ export default function Profile() {
 
   return (
     <Layout>
-      <h2 className="page-title">My Profile</h2>
+      {/* ✅ HEADING WITH USER NAME */}
+      <h2 className="page-title">
+        My Profile{" "}
+        {profile.name && (
+          <span
+            style={{
+              fontSize: "15px",
+              color: "#60a5fa",
+              fontWeight: 500,
+            }}
+          >
+            ({profile.name})
+          </span>
+        )}
+      </h2>
 
       {error && <p style={{ color: "#dc2626" }}>{error}</p>}
       {message && <p style={{ color: "#16a34a" }}>{message}</p>}
