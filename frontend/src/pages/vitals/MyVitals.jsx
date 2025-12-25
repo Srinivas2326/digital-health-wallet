@@ -23,6 +23,14 @@ ChartJS.register(
   Legend
 );
 
+/* =========================
+   DATE FORMAT FIX (IMPORTANT)
+========================= */
+const parseSQLiteDate = (dateStr) => {
+  // Convert: "YYYY-MM-DD HH:mm:ss" → valid JS date
+  return new Date(dateStr.replace(" ", "T"));
+};
+
 export default function MyVitals() {
   const [vitals, setVitals] = useState([]);
   const [type, setType] = useState("");
@@ -31,6 +39,9 @@ export default function MyVitals() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
+  /* =========================
+     FETCH VITALS
+  ========================= */
   const fetchVitals = async () => {
     try {
       const res = await api.get("/vitals");
@@ -40,6 +51,9 @@ export default function MyVitals() {
     }
   };
 
+  /* =========================
+     ADD VITAL
+  ========================= */
   const addVital = async () => {
     setError("");
     setSuccess("");
@@ -71,17 +85,30 @@ export default function MyVitals() {
     fetchVitals();
   }, []);
 
-  // CHART DATA BUILDER
+  /* =========================
+     BUILD CHART DATA
+  ========================= */
   const buildChartData = (vitalType) => {
-    const filtered = vitals.filter(
-      (v) =>
-        v.vitalType.toLowerCase() === vitalType.toLowerCase() &&
-        !isNaN(parseFloat(v.value))
-    );
+    // Filter + validate numeric values
+    const filtered = vitals
+      .filter(
+        (v) =>
+          v.vitalType.toLowerCase() === vitalType.toLowerCase() &&
+          !isNaN(parseFloat(v.value))
+      )
+      // SORT BY DATE (CRITICAL)
+      .sort(
+        (a, b) =>
+          parseSQLiteDate(a.recordedAt) -
+          parseSQLiteDate(b.recordedAt)
+      );
 
     return {
       labels: filtered.map((v) =>
-        new Date(v.createdAt).toLocaleDateString()
+        parseSQLiteDate(v.recordedAt).toLocaleDateString("en-IN", {
+          day: "2-digit",
+          month: "short",
+        })
       ),
       datasets: [
         {
@@ -144,6 +171,9 @@ export default function MyVitals() {
               </h4>
               <p style={{ fontSize: "18px", fontWeight: "600" }}>
                 {v.value}
+              </p>
+              <p style={{ fontSize: "12px", color: "#6b7280" }}>
+                {parseSQLiteDate(v.recordedAt).toLocaleString()}
               </p>
             </div>
           ))
