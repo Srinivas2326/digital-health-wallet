@@ -3,7 +3,7 @@ import api from "../../api/axios";
 import Layout from "../../components/common/Layout";
 
 export default function Profile() {
-  const [form, setForm] = useState({
+  const [profile, setProfile] = useState({
     name: "",
     email: "",
   });
@@ -13,38 +13,63 @@ export default function Profile() {
     newPassword: "",
   });
 
+  const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
+  /* =========================
+     FETCH PROFILE
+  ========================= */
   useEffect(() => {
-    api.get("/profile").then((res) => {
-      setForm({
-        name: res.data.name,
-        email: res.data.email,
-      });
-    });
+    const fetchProfile = async () => {
+      try {
+        const res = await api.get("/profile");
+        setProfile({
+          name: res.data.name,
+          email: res.data.email,
+        });
+      } catch {
+        setError("Failed to load profile");
+      }
+    };
+
+    fetchProfile();
   }, []);
 
+  /* =========================
+     UPDATE PROFILE
+  ========================= */
   const updateProfile = async () => {
+    setError("");
+    setMessage("");
+
     try {
-      setError("");
-      setMessage("");
-      await api.put("/profile", form);
-      setMessage("Profile updated successfully");
+      setLoading(true);
+      await api.put("/profile", profile);
+      setMessage("Profile updated successfully ✅");
     } catch (err) {
       setError(err.response?.data?.message || "Update failed");
+    } finally {
+      setLoading(false);
     }
   };
 
+  /* =========================
+     CHANGE PASSWORD
+  ========================= */
   const changePassword = async () => {
+    setError("");
+    setMessage("");
+
     try {
-      setError("");
-      setMessage("");
+      setLoading(true);
       await api.put("/profile/password", passwords);
-      setMessage("Password updated successfully");
+      setMessage("Password updated successfully 🔒");
       setPasswords({ currentPassword: "", newPassword: "" });
     } catch (err) {
       setError(err.response?.data?.message || "Password update failed");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -52,30 +77,30 @@ export default function Profile() {
     <Layout>
       <h2 className="page-title">My Profile</h2>
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      {message && <p style={{ color: "green" }}>{message}</p>}
+      {error && <p style={{ color: "#dc2626" }}>{error}</p>}
+      {message && <p style={{ color: "#16a34a" }}>{message}</p>}
 
-      {/* UPDATE PROFILE */}
-      <div className="card">
+      {/* EDIT PROFILE */}
+      <div className="card mt-20">
         <h3>Edit Profile</h3>
 
         <input
           placeholder="Name"
-          value={form.name}
+          value={profile.name}
           onChange={(e) =>
-            setForm({ ...form, name: e.target.value })
+            setProfile({ ...profile, name: e.target.value })
           }
         />
 
         <input
           placeholder="Email"
-          value={form.email}
+          value={profile.email}
           onChange={(e) =>
-            setForm({ ...form, email: e.target.value })
+            setProfile({ ...profile, email: e.target.value })
           }
         />
 
-        <button onClick={updateProfile}>
+        <button onClick={updateProfile} disabled={loading}>
           Update Profile
         </button>
       </div>
@@ -108,7 +133,7 @@ export default function Profile() {
           }
         />
 
-        <button onClick={changePassword}>
+        <button onClick={changePassword} disabled={loading}>
           Change Password
         </button>
       </div>
