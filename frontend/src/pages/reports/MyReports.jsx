@@ -85,10 +85,26 @@ export default function MyReports() {
         <h4>Filter Reports</h4>
 
         <div className="filter-grid">
-          <input type="date" value={fromDate} onChange={(e) => setFromDate(e.target.value)} />
-          <input type="date" value={toDate} onChange={(e) => setToDate(e.target.value)} />
-          <input placeholder="Report Type (Blood, X-Ray)" value={type} onChange={(e) => setType(e.target.value)} />
-          <input placeholder="Vitals keyword (BP, Sugar)" value={vitals} onChange={(e) => setVitals(e.target.value)} />
+          <input
+            type="date"
+            value={fromDate}
+            onChange={(e) => setFromDate(e.target.value)}
+          />
+          <input
+            type="date"
+            value={toDate}
+            onChange={(e) => setToDate(e.target.value)}
+          />
+          <input
+            placeholder="Report Type (Blood, X-Ray)"
+            value={type}
+            onChange={(e) => setType(e.target.value)}
+          />
+          <input
+            placeholder="Vitals keyword (BP, Sugar)"
+            value={vitals}
+            onChange={(e) => setVitals(e.target.value)}
+          />
         </div>
 
         <button className="primary-btn mt-10" onClick={applyFilter}>
@@ -98,6 +114,7 @@ export default function MyReports() {
 
       {success && <p className="success-text mt-10">{success}</p>}
 
+      {/* ================= REPORT LIST ================= */}
       {loading ? (
         <p className="mt-20">Loading reports...</p>
       ) : reports.length === 0 ? (
@@ -105,18 +122,21 @@ export default function MyReports() {
       ) : (
         <div className="card-grid mt-20">
           {reports.map((r) => (
-            <div className="card" key={r.id}>
-              <h4>{r.type}</h4>
-              <p>Date: {r.reportDate}</p>
-              <p>Vitals: {r.vitals || "N/A"}</p>
+            <div className="card report-card" key={r.id}>
+              {/* INFO */}
+              <div className="report-info">
+                <h4>{r.type}</h4>
+                <p>Date: {r.reportDate}</p>
+                <p>Vitals: {r.vitals || "N/A"}</p>
+              </div>
 
-              {/* ===== ACTION BUTTONS ===== */}
+              {/* ACTION BUTTONS */}
               <div className="report-actions">
                 <a
                   href={r.filePath}
                   target="_blank"
                   rel="noreferrer"
-                  className="btn outline-btn"
+                  className="btn primary-btn"
                 >
                   View / Download
                 </a>
@@ -129,7 +149,7 @@ export default function MyReports() {
                 </button>
               </div>
 
-              {/* ===== SHARE ===== */}
+              {/* SHARE */}
               <div className="share-section">
                 <input
                   type="email"
