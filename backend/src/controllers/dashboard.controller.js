@@ -10,29 +10,50 @@ exports.getDashboardStats = (req, res) => {
     sharedAccess: 0,
   };
 
-  // 1️⃣ Total reports (ONLY this user)
+  /* =========================
+     TOTAL REPORTS (USER ONLY)
+  ========================= */
   db.get(
     "SELECT COUNT(*) AS count FROM reports WHERE userId = ?",
     [userId],
-    (err, reports) => {
-      if (err) return res.status(500).json({ message: "DB error" });
-      stats.totalReports = reports.count;
+    (err, reportsRow) => {
+      if (err) {
+        return res.status(500).json({
+          message: "Failed to fetch reports count",
+        });
+      }
 
-      // 2️⃣ Total vitals (ONLY this user)
+      stats.totalReports = reportsRow?.count || 0;
+
+      /* =========================
+         TOTAL VITALS (USER ONLY)
+      ========================= */
       db.get(
         "SELECT COUNT(*) AS count FROM vitals WHERE userId = ?",
         [userId],
-        (err, vitals) => {
-          if (err) return res.status(500).json({ message: "DB error" });
-          stats.totalVitals = vitals.count;
+        (err, vitalsRow) => {
+          if (err) {
+            return res.status(500).json({
+              message: "Failed to fetch vitals count",
+            });
+          }
 
-          // 3️⃣ Shared reports (shared WITH this user)
+          stats.totalVitals = vitalsRow?.count || 0;
+
+          /* =========================
+             SHARED ACCESS (WITH USER)
+          ========================= */
           db.get(
             "SELECT COUNT(*) AS count FROM shared_access WHERE sharedWith = ?",
             [userEmail],
-            (err, shared) => {
-              if (err) return res.status(500).json({ message: "DB error" });
-              stats.sharedAccess = shared.count;
+            (err, sharedRow) => {
+              if (err) {
+                return res.status(500).json({
+                  message: "Failed to fetch shared access count",
+                });
+              }
+
+              stats.sharedAccess = sharedRow?.count || 0;
 
               return res.json(stats);
             }

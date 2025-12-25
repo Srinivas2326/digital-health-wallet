@@ -7,6 +7,7 @@ import UploadReport from "../pages/reports/UploadReport";
 import MyReports from "../pages/reports/MyReports";
 import MyVitals from "../pages/vitals/MyVitals";
 import SharedWithMe from "../pages/share/SharedWithMe";
+import Profile from "../pages/profile/Profile";
 
 import ProtectedRoute from "../components/common/ProtectedRoute";
 
@@ -14,9 +15,11 @@ export default function AppRoutes() {
   return (
     <BrowserRouter>
       <Routes>
+        {/* Public Routes */}
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
 
+        {/* Protected Routes */}
         <Route
           path="/dashboard"
           element={
@@ -25,6 +28,7 @@ export default function AppRoutes() {
             </ProtectedRoute>
           }
         />
+
         <Route
           path="/upload"
           element={
@@ -33,6 +37,7 @@ export default function AppRoutes() {
             </ProtectedRoute>
           }
         />
+
         <Route
           path="/reports"
           element={
@@ -41,6 +46,7 @@ export default function AppRoutes() {
             </ProtectedRoute>
           }
         />
+
         <Route
           path="/vitals"
           element={
@@ -49,11 +55,21 @@ export default function AppRoutes() {
             </ProtectedRoute>
           }
         />
+
         <Route
           path="/shared"
           element={
             <ProtectedRoute>
               <SharedWithMe />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
             </ProtectedRoute>
           }
         />

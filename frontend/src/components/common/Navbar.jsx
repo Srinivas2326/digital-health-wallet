@@ -1,35 +1,44 @@
-import { useAuth } from "../../context/AuthContext";
-import { useNavigate } from "react-router-dom";
-import { useTheme } from "../../context/ThemeContext";
+const db = require("../config/db");
 
-export default function Navbar() {
-  const { logout } = useAuth();
-  const { theme, toggleTheme } = useTheme();
-  const navigate = useNavigate();
+exports.getDashboardStats = (req, res) => {
+  const userId = req.user.id;
+  const userEmail = req.user.email;
 
-  const handleLogout = () => {
-    logout();
-    navigate("/");
+  const stats = {
+    totalReports: 0,
+    totalVitals: 0,
+    sharedAccess: 0,
   };
 
-  return (
-    <header className="navbar">
-      <div className="navbar-left">
-        <h3>Digital Health Wallet</h3>
-        <span className="navbar-subtitle">Secure Health Records</span>
-      </div>
+  // 1️⃣ Total reports (ONLY this user)
+  db.get(
+    "SELECT COUNT(*) AS count FROM reports WHERE userId = ?",
+    [userId],
+    (err, reports) => {
+      if (err) return res.status(500).json({ message: "DB error" });
+      stats.totalReports = reports.count;
 
-      <div className="navbar-right" style={{ display: "flex", gap: "12px" }}>
-        {/* 🌗 THEME TOGGLE */}
-        <button className="theme-btn" onClick={toggleTheme}>
-          {theme === "light" ? "🌙 Dark" : "☀️ Light"}
-        </button>
+      // 2️⃣ Total vitals (ONLY this user)
+      db.get(
+        "SELECT COUNT(*) AS count FROM vitals WHERE userId = ?",
+        [userId],
+        (err, vitals) => {
+          if (err) return res.status(500).json({ message: "DB error" });
+          stats.totalVitals = vitals.count;
 
-        {/* 🚪 LOGOUT */}
-        <button className="logout-btn" onClick={handleLogout}>
-          Logout
-        </button>
-      </div>
-    </header>
+          // 3️⃣ Shared reports (shared WITH this user)
+          db.get(
+            "SELECT COUNT(*) AS count FROM shared_access WHERE sharedWith = ?",
+            [userEmail],
+            (err, shared) => {
+              if (err) return res.status(500).json({ message: "DB error" });
+              stats.sharedAccess = shared.count;
+
+              return res.json(stats);
+            }
+          );
+        }
+      );
+    }
   );
-}
+};
