@@ -1,7 +1,7 @@
 const sqlite3 = require("sqlite3").verbose();
 const path = require("path");
 
-// ✅ Absolute DB path (IMPORTANT for Render)
+//  Absolute DB path
 const dbPath = path.join(__dirname, "../healthwallet.db");
 
 const db = new sqlite3.Database(dbPath, (err) => {
@@ -16,9 +16,7 @@ db.serialize(() => {
   // Enable foreign keys
   db.run(`PRAGMA foreign_keys = ON`);
 
-  // =========================
   // USERS TABLE
-  // =========================
   db.run(`
     CREATE TABLE IF NOT EXISTS users (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -28,9 +26,7 @@ db.serialize(() => {
     )
   `);
 
-  // =========================
   // REPORTS TABLE (BASE)
-  // =========================
   db.run(`
     CREATE TABLE IF NOT EXISTS reports (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -44,9 +40,6 @@ db.serialize(() => {
     )
   `);
 
-  // =========================
-  // 🔥 AUTO-MIGRATION: ADD publicId COLUMN IF MISSING
-  // =========================
   db.all(`PRAGMA table_info(reports);`, (err, columns) => {
     if (err) {
       console.error("❌ Failed to read reports schema:", err.message);
@@ -76,9 +69,7 @@ db.serialize(() => {
     }
   });
 
-  // =========================
   // VITALS TABLE
-  // =========================
   db.run(`
     CREATE TABLE IF NOT EXISTS vitals (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -90,9 +81,7 @@ db.serialize(() => {
     )
   `);
 
-  // =========================
   // SHARED ACCESS TABLE
-  // =========================
   db.run(`
     CREATE TABLE IF NOT EXISTS shared_access (
       id INTEGER PRIMARY KEY AUTOINCREMENT,

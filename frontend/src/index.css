@@ -345,9 +345,7 @@ canvas {
 }
 
 
-/* ===============================
-   NAVBAR RIGHT ALIGNMENT FIX
-================================ */
+   /* NAVBAR RIGHT ALIGNMENT  */
 .navbar-right {
   display: flex;
   align-items: center;
@@ -372,9 +370,7 @@ canvas {
   color: #2563eb;
 }
 
-/* ===============================
-   MY REPORTS ALIGNMENT FIX
-================================ */
+   /* MY REPORTS ALIGNMENT  */
 
 /* Filter section spacing */
 .report-filter {
@@ -472,7 +468,7 @@ canvas {
 }
 
 
-/* ================= MY REPORTS FIX ================= */
+/*  MY REPORTS */
 
 /* Filter card */
 .filter-card {

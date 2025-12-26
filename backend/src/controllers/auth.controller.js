@@ -2,32 +2,26 @@ const db = require("../config/db");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-/* =========================
-   STRICT EMAIL REGEX
-   - lowercase only
-   - numbers allowed
-   - dot allowed
-========================= */
+
 const emailRegex = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]{2,}$/;
 
-/* =========================
-   REGISTER USER
-========================= */
+  //  REGISTER USER
+
 exports.register = (req, res) => {
   try {
     let { name, email, password } = req.body;
 
-    // 1️⃣ Basic validation
+    // 1️ Basic validation
     if (!name || !email || !password) {
       return res.status(400).json({
         message: "Name, email, and password are required",
       });
     }
 
-    // 2️⃣ Force lowercase email (IMPORTANT)
+    // 2️ Force lowercase email (IMPORTANT)
     email = email.toLowerCase();
 
-    // 3️⃣ Email format validation (STRICT)
+    // 3️ Email format validation (STRICT)
     if (!emailRegex.test(email)) {
       return res.status(400).json({
         message:
@@ -35,17 +29,17 @@ exports.register = (req, res) => {
       });
     }
 
-    // 4️⃣ Password validation
+    // 4️ Password validation
     if (password.length < 6) {
       return res.status(400).json({
         message: "Password must be at least 6 characters",
       });
     }
 
-    // 5️⃣ Hash password
+    // 5️ Hash password
     const hashedPassword = bcrypt.hashSync(password, 10);
 
-    // 6️⃣ Insert user
+    // 6️ Insert user
     db.run(
       "INSERT INTO users (name, email, password) VALUES (?,?,?)",
       [name.trim(), email, hashedPassword],
@@ -76,24 +70,22 @@ exports.register = (req, res) => {
   }
 };
 
-/* =========================
-   LOGIN USER
-========================= */
+  //  LOGIN USER
 exports.login = (req, res) => {
   try {
     let { email, password } = req.body;
 
-    // 1️⃣ Validation
+    // 1️ Validation
     if (!email || !password) {
       return res.status(400).json({
         message: "Email and password are required",
       });
     }
 
-    // 2️⃣ Force lowercase email
+    // 2️ Force lowercase email
     email = email.toLowerCase();
 
-    // 3️⃣ Email format validation (STRICT)
+    // 3️ Email format validation (STRICT)
     if (!emailRegex.test(email)) {
       return res.status(400).json({
         message:
@@ -101,7 +93,7 @@ exports.login = (req, res) => {
       });
     }
 
-    // 4️⃣ Fetch user
+    // 4️ Fetch user
     db.get(
       "SELECT id, email, password FROM users WHERE email = ?",
       [email],
@@ -119,7 +111,7 @@ exports.login = (req, res) => {
           });
         }
 
-        // 5️⃣ Compare password
+        // 5️ Compare password
         const isMatch = bcrypt.compareSync(password, user.password);
         if (!isMatch) {
           return res.status(401).json({
@@ -127,14 +119,14 @@ exports.login = (req, res) => {
           });
         }
 
-        // 6️⃣ JWT secret check
+        // 6️ JWT secret check
         if (!process.env.JWT_SECRET) {
           return res.status(500).json({
             message: "JWT secret not configured",
           });
         }
 
-        // 7️⃣ Generate token
+        // 7️ Generate token
         const token = jwt.sign(
           {
             id: user.id,

@@ -1,9 +1,7 @@
 const db = require("../config/db");
 const bcrypt = require("bcryptjs");
 
-/* =========================
-   GET MY PROFILE
-========================= */
+  //  GET MY PROFILE
 exports.getProfile = (req, res) => {
   const userId = req.user.id;
 
@@ -24,9 +22,7 @@ exports.getProfile = (req, res) => {
   );
 };
 
-/* =========================
-   UPDATE PROFILE (NAME, EMAIL)
-========================= */
+  //  UPDATE PROFILE (NAME, EMAIL)
 exports.updateProfile = (req, res) => {
   const userId = req.user.id;
   let { name, email } = req.body;
@@ -58,9 +54,7 @@ exports.updateProfile = (req, res) => {
   );
 };
 
-/* =========================
-   CHANGE PASSWORD
-========================= */
+  //  CHANGE PASSWORD
 exports.changePassword = (req, res) => {
   const userId = req.user.id;
   const { currentPassword, newPassword } = req.body;

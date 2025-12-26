@@ -10,9 +10,7 @@ exports.getDashboardStats = (req, res) => {
     sharedAccess: 0,
   };
 
-  /* =========================
-     TOTAL REPORTS (USER ONLY)
-  ========================= */
+    //  TOTAL REPORTS (USER ONLY)
   db.get(
     "SELECT COUNT(*) AS count FROM reports WHERE userId = ?",
     [userId],
@@ -25,9 +23,7 @@ exports.getDashboardStats = (req, res) => {
 
       stats.totalReports = reportsRow?.count || 0;
 
-      /* =========================
-         TOTAL VITALS (USER ONLY)
-      ========================= */
+        //  TOTAL VITALS (USER ONLY)
       db.get(
         "SELECT COUNT(*) AS count FROM vitals WHERE userId = ?",
         [userId],
@@ -40,9 +36,8 @@ exports.getDashboardStats = (req, res) => {
 
           stats.totalVitals = vitalsRow?.count || 0;
 
-          /* =========================
-             SHARED ACCESS (WITH USER)
-          ========================= */
+
+          //  SHARED ACCESS (WITH USER)
           db.get(
             "SELECT COUNT(*) AS count FROM shared_access WHERE sharedWith = ?",
             [userEmail],

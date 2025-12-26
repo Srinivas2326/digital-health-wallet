@@ -21,14 +21,14 @@ export default function UploadReport() {
     setError("");
     setSuccess("");
 
-    // ✅ Frontend validation
+    //  Frontend validation
     if (!form.reportType || !form.reportDate || !form.report) {
       setError("Report type, date, and file are required");
       return;
     }
 
     const formData = new FormData();
-    formData.append("report", form.report); // 🔥 MUST be "report"
+    formData.append("report", form.report); 
     formData.append("reportType", form.reportType);
     formData.append("reportDate", form.reportDate);
     formData.append("vitals", form.vitals || "");

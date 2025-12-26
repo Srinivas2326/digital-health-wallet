@@ -1,9 +1,7 @@
 const db = require("../config/db");
 const cloudinary = require("../config/cloudinary");
 
-/* ======================================================
-   UPLOAD MEDICAL REPORT
-====================================================== */
+  //  UPLOAD MEDICAL REPORT
 exports.uploadReport = (req, res) => {
   try {
     const { reportType, reportDate, vitals } = req.body;
@@ -19,10 +17,10 @@ exports.uploadReport = (req, res) => {
       });
     }
 
-    // ✅ Cloudinary file URL
+    //  Cloudinary file URL
     const filePath = req.file.path;
 
-    // ✅ Cloudinary public_id (needed for delete)
+    //  Cloudinary public_id (needed for delete)
     const publicId = req.file.filename || req.file.public_id;
 
     db.run(
@@ -61,9 +59,7 @@ exports.uploadReport = (req, res) => {
   }
 };
 
-/* ======================================================
-   GET ALL REPORTS (LOGGED-IN USER)
-====================================================== */
+  //  GET ALL REPORTS (LOGGED-IN USER)
 exports.getMyReports = (req, res) => {
   try {
     db.all(
@@ -102,9 +98,7 @@ exports.getMyReports = (req, res) => {
   }
 };
 
-/* ======================================================
-   FILTER REPORTS
-====================================================== */
+  //  FILTER REPORTS
 exports.filterReports = (req, res) => {
   try {
     const { fromDate, toDate, type, vitals } = req.query;
@@ -166,9 +160,7 @@ exports.filterReports = (req, res) => {
   }
 };
 
-/* ======================================================
-   DELETE REPORT (OWNER ONLY)
-====================================================== */
+  //  DELETE REPORT (OWNER ONLY)
 exports.deleteReport = (req, res) => {
   const reportId = req.params.id;
   const userId = req.user.id;
@@ -189,14 +181,14 @@ exports.deleteReport = (req, res) => {
       }
 
       try {
-        // ✅ Delete from Cloudinary
+        //  Delete from Cloudinary
         if (report.publicId) {
           await cloudinary.uploader.destroy(report.publicId, {
             resource_type: "auto",
           });
         }
 
-        // ✅ Delete DB record
+        //  Delete DB record
         db.run(
           "DELETE FROM reports WHERE id = ?",
           [reportId],

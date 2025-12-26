@@ -17,9 +17,7 @@ export default function Profile() {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
-  /* =========================
-     FETCH PROFILE
-  ========================= */
+    //  FETCH PROFILE
   useEffect(() => {
     const fetchProfile = async () => {
       try {
@@ -36,9 +34,7 @@ export default function Profile() {
     fetchProfile();
   }, []);
 
-  /* =========================
-     UPDATE PROFILE
-  ========================= */
+    //  UPDATE PROFILE
   const updateProfile = async () => {
     setError("");
     setMessage("");
@@ -54,9 +50,8 @@ export default function Profile() {
     }
   };
 
-  /* =========================
-     CHANGE PASSWORD
-  ========================= */
+
+  //  CHANGE PASSWORD
   const changePassword = async () => {
     setError("");
     setMessage("");
@@ -75,7 +70,7 @@ export default function Profile() {
 
   return (
     <Layout>
-      {/* ✅ HEADING WITH USER NAME */}
+      {/*  HEADING WITH USER NAME */}
       <h2 className="page-title">
         My Profile{" "}
         {profile.name && (

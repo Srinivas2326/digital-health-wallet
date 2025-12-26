@@ -1,7 +1,7 @@
 const db = require("../config/db");
 
 
-//  * ADD VITAL RECORD
+//   ADD VITAL RECORD
 
 exports.addVital = (req, res) => {
   try {
@@ -47,7 +47,7 @@ exports.addVital = (req, res) => {
 };
 
 
-//  * GET ALL VITALS (USER)
+//   GET ALL VITALS (USER)
 
 exports.getMyVitals = (req, res) => {
   try {
@@ -81,13 +81,7 @@ exports.getMyVitals = (req, res) => {
   }
 };
 
-/*
-  FILTER VITALS
-  Query Params:
-   - vitalType
-   - fromDate
-   - toDate
- */
+// Filter Report
 exports.filterVitals = (req, res) => {
   try {
     const { vitalType, fromDate, toDate } = req.query;

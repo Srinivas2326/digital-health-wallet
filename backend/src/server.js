@@ -4,14 +4,11 @@ require("dotenv").config();
 
 const app = express();
 
-/* ===============================
-   DATABASE INIT
-=============================== */
+
 require("./config/db");
 
-/* ===============================
-   CORS CONFIG
-=============================== */
+
+  //  CORS CONFIG
 const allowedOrigins = [
   "http://localhost:5173",
   "https://digital-health-wallet-ochre.vercel.app",
@@ -33,25 +30,20 @@ app.use(
   })
 );
 
-/* ===============================
-   MIDDLEWARES
-=============================== */
+  //  MIDDLEWARES
 app.use(express.json());
 
-/* ===============================
-   API ROUTES
-=============================== */
+
+  //  API ROUTES
 app.use("/api/auth", require("./routes/auth.routes"));
 app.use("/api/protected", require("./routes/protected.routes"));
 app.use("/api/reports", require("./routes/report.routes"));
 app.use("/api/vitals", require("./routes/vitals.routes"));
 app.use("/api/share", require("./routes/share.routes"));
-app.use("/api/dashboard", require("./routes/dashboard.routes")); // ✅ dashboard stats
-app.use("/api/profile", require("./routes/profile.routes"));     // ✅ profile management
+app.use("/api/dashboard", require("./routes/dashboard.routes")); 
+app.use("/api/profile", require("./routes/profile.routes"));     
 
-/* ===============================
-   HEALTH CHECK
-=============================== */
+
 app.get("/", (req, res) => {
   res.json({
     status: "OK",
@@ -59,9 +51,7 @@ app.get("/", (req, res) => {
   });
 });
 
-/* ===============================
-   GLOBAL ERROR HANDLER (OPTIONAL)
-=============================== */
+
 app.use((err, req, res, next) => {
   console.error("❌ Server Error:", err.message);
   res.status(500).json({
@@ -69,9 +59,7 @@ app.use((err, req, res, next) => {
   });
 });
 
-/* ===============================
-   START SERVER
-=============================== */
+
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {

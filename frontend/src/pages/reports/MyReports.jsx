@@ -16,7 +16,7 @@ export default function MyReports() {
   const [shareEmail, setShareEmail] = useState({});
   const [success, setSuccess] = useState("");
 
-  /* ================= FETCH REPORTS ================= */
+  //  FETCH REPORTS 
   const fetchReports = async () => {
     try {
       const res = await api.get("/reports");
@@ -32,7 +32,8 @@ export default function MyReports() {
     fetchReports();
   }, []);
 
-  /* ================= APPLY FILTER ================= */
+  
+  // APPLY FILTER
   const applyFilter = async () => {
     try {
       const res = await api.get("/reports/filter", {
@@ -44,7 +45,7 @@ export default function MyReports() {
     }
   };
 
-  /* ================= DELETE REPORT ================= */
+  // DELETE REPORT
   const deleteReport = async (id) => {
     if (!window.confirm("Are you sure you want to delete this report?")) return;
 
@@ -56,7 +57,7 @@ export default function MyReports() {
     }
   };
 
-  /* ================= SHARE REPORT ================= */
+  // SHARE REPORT
   const shareReport = async (reportId) => {
     const email = shareEmail[reportId];
     if (!email) {
@@ -80,7 +81,7 @@ export default function MyReports() {
     <Layout>
       <h2 className="page-title">My Reports</h2>
 
-      {/* ================= FILTER SECTION ================= */}
+      {/* FILTER SECTION */}
       <div className="card mt-20">
         <h4>Filter Reports</h4>
 
@@ -115,7 +116,7 @@ export default function MyReports() {
 
       {success && <p className="success-text mt-10">{success}</p>}
 
-      {/* ================= REPORT LIST ================= */}
+      {/*  REPORT LIST  */}
       {loading ? (
         <p className="mt-20">Loading reports...</p>
       ) : reports.length === 0 ? (

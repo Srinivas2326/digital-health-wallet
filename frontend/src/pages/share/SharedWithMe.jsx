@@ -60,7 +60,6 @@ export default function SharedWithMe() {
                 </p>
               )}
 
-              {/* ✅ FIX: OPEN CLOUDINARY URL DIRECTLY */}
               <a
                 href={r.filePath}
                 target="_blank"

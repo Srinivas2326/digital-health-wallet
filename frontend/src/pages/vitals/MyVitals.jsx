@@ -23,9 +23,7 @@ ChartJS.register(
   Legend
 );
 
-/* =========================
-   SQLITE DATE FIX
-========================= */
+  //  SQLITE DATE FIX
 const parseSQLiteDate = (dateStr) => {
   if (!dateStr) return null;
   return new Date(dateStr.replace(" ", "T"));
@@ -39,9 +37,7 @@ export default function MyVitals() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  /* =========================
-     FETCH VITALS
-  ========================= */
+    //  FETCH VITALS
   const fetchVitals = async () => {
     try {
       const res = await api.get("/vitals");
@@ -55,9 +51,7 @@ export default function MyVitals() {
     fetchVitals();
   }, []);
 
-  /* =========================
-     ADD VITAL
-  ========================= */
+    //  ADD VITAL
   const addVital = async () => {
     setError("");
     setSuccess("");
@@ -90,9 +84,7 @@ export default function MyVitals() {
     }
   };
 
-  /* =========================
-     BUILD CHART DATA
-  ========================= */
+    //  BUILD CHART DATA
   const buildChartData = (vitalType) => {
     const filtered = vitals
       .filter(
