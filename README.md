@@ -14,9 +14,8 @@ ________________________________________________________________________________
 
 The main objectives of this project are:
 
-To provide a secure digital space for storing medical records
-
-To allow users to upload, view, filter, and manage health reports
+* To provide a secure digital space for storing medical records
+* To allow users to upload, view, filter, and manage health reports
 
 To track health vitals over time
 
