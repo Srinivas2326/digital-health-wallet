@@ -96,7 +96,7 @@ Backend: Render
 
 📁 Project Structure
 
-digital-health-wallet/
+"""digital-health-wallet/
 │
 ├── backend/
 │   ├── src/
@@ -119,6 +119,7 @@ digital-health-wallet/
 │   └── package.json
 │
 └── README.md
+"""
 
 🗄️ Database
 
