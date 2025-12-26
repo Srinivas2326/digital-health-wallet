@@ -25,7 +25,7 @@ ________________________________________________________________________________
 * The application acts as a personal health repository, giving users complete control over their medical information.
 
 __________________________________________________________________________________________________________________________________
-
+```
 🏗 System Architecture
 The project follows the MVC (Model–View–Controller) architecture.
 React (Frontend)
@@ -33,6 +33,7 @@ React (Frontend)
 Node.js + Express (Backend API)
    ↓
 SQLite Database
+```
 
 Why MVC?
 * Separation of concerns
