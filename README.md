@@ -150,80 +150,47 @@ ________________________________________________________________________________
 * Configures middleware (CORS, JSON parsing)
 * Registers API routes
 2. config/db.js
-
-Creates and manages SQLite database connection
-
-models
-
-Defines database schema (users, reports)
-
-controllers
-
-Business logic for authentication, reports, users
-
-routes
-
-API endpoints like:
-
-/register
-
-/login
-
-/reports/upload
-
-/reports/list
-
-middlewares
-
-JWT authentication check
-
-File upload validation
+* Creates and manages SQLite database connection
+3. models
+* Defines database schema (users, reports)
+4. controllers
+* Business logic for authentication, reports, users
+5. routes
+* API endpoints like:
+* /register
+* /login
+* /reports/upload
+* /reports/list
+6. middlewares
+* JWT authentication check
+* File upload validation
 
 __________________________________________________________________________________________________________________________________
 
 🎨 Frontend Explanation (High Level)
-Components
-
-Reusable UI components (Navbar, Cards, etc.)
-
-Pages
-
-Login
-
-Register
-
-Dashboard
-
-Upload Report
-
-View Reports
-
-Services
-
-Axios API configuration
-
-Handles backend requests
+1. Components
+* Reusable UI components (Navbar, Cards, etc.)
+2. Pages
+* Login
+* Register
+3. Dashboard
+* Upload Report
+* View Reports
+4. Services
+* Axios API configuration
+* Handles backend requests
 
 __________________________________________________________________________________________________________________________________
 
 🔄 Data Flow
-
-User interacts with React UI
-
-React sends HTTP request using Axios
-
-Express server receives request
-
-Middleware validates request & token
-
-Controller processes logic
-
-Database stores or retrieves data
-
-Response sent back to frontend
-
-UI updates dynamically
-
+1. User interacts with React UI
+2. React sends HTTP request using Axios
+3. Express server receives request
+4. Middleware validates request & token
+5. Controller processes logic
+6. Database stores or retrieves data
+7. Response sent back to frontend
+8. UI updates dynamically
 __________________________________________________________________________________________________________________________________
 
 🚀 Deployment Steps
@@ -234,21 +201,21 @@ ________________________________________________________________________________
 * Set environment variables:
 * JWT_SECRET=your_secret_key
 
-Set start command:
-node server.js
-Deploy backend
+* Set start command:
+* node server.js
+* Deploy backend
 
 🌐 Frontend Deployment (Vercel)
 * Push frontend code to GitHub
 * Create new project in Vercel
 * Import GitHub repository
 
-Set build command:
-npm run build
-Set output directory:
-dist
-Add backend API URL in environment variables
-Deploy frontend
+* Set build command:
+* npm run build
+* Set output directory:
+* dist
+* Add backend API URL in environment variables
+* Deploy frontend
 
 __________________________________________________________________________________________________________________________________
 
