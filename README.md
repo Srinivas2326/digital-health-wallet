@@ -236,7 +236,6 @@ Cloud storage for reports
 Export reports as PDF
 
 👨‍💻 Author
-
 Srinivas
 B.Tech CSE (AI)
 Full Stack Developer
