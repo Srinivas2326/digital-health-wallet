@@ -3,11 +3,8 @@
 📌 Project Overview
 
 * Digital Health Wallet is a full-stack web application that allows users to securely store, manage, and share medical records and health vitals in one centralized digital platform.
-
 * The idea is similar to a digital wallet, but instead of money, it stores health data such as medical reports, lab tests, X-rays, and vitals like BP and sugar levels.
-
 * This system eliminates the need to carry physical medical reports and enables easy access, tracking, and secure sharing of health information.
-
 __________________________________________________________________________________________________________________________________
 
 🎯 Project Objective
@@ -16,29 +13,21 @@ The main objectives of this project are:
 
 * To provide a secure digital space for storing medical records
 * To allow users to upload, view, filter, and manage health reports
-
-To track health vitals over time
-
-To enable secure sharing of reports with doctors or family members
-
-To implement authentication and authorization using JWT
-
-To follow MVC architecture for clean, scalable, and maintainable code
+* To track health vitals over time
+* To enable secure sharing of reports with doctors or family members
+* To implement authentication and authorization using JWT
+* To follow MVC architecture for clean, scalable, and maintainable code
 
 __________________________________________________________________________________________________________________________________
 
 🧠 Core Idea
-
-“Instead of carrying physical medical reports, users can store all their health data digitally and access it anytime, anywhere.”
-
-The application acts as a personal health repository, giving users complete control over their medical information.
+* “Instead of carrying physical medical reports, users can store all their health data digitally and access it anytime, anywhere.”
+* The application acts as a personal health repository, giving users complete control over their medical information.
 
 __________________________________________________________________________________________________________________________________
 
 🏗 System Architecture
-
 The project follows the MVC (Model–View–Controller) architecture.
-
 React (Frontend)
    ↓ HTTP Requests (Axios)
 Node.js + Express (Backend API)
@@ -46,14 +35,10 @@ Node.js + Express (Backend API)
 SQLite Database
 
 Why MVC?
-
-Separation of concerns
-
-Clean and readable code
-
-Easier debugging and scalability
-
-Industry-standard architecture
+* Separation of concerns
+* Clean and readable code
+* Easier debugging and scalability
+* Industry-standard architecture
 
 __________________________________________________________________________________________________________________________________
 
@@ -79,71 +64,45 @@ VS Code
 __________________________________________________________________________________________________________________________________
 
 🔐 Authentication & Security
-
-User authentication is implemented using JWT
-
-Protected routes require a valid token
-
-Passwords are securely handled
-
-Only authenticated users can:
-
-Upload reports
-
-View their reports
-
-Share reports
+* User authentication is implemented using JWT
+* Protected routes require a valid token
+* Passwords are securely handled
+* Only authenticated users can:
+* Upload reports
+* View their reports
+* Share reports
 
 __________________________________________________________________________________________________________________________________
 
 ✨ Features
 👤 User Features
-
-Register & Login
-
-Secure authentication using JWT
-
-User profile management
+* Register & Login
+* Secure authentication using JWT
+* User profile management
 
 📄 Medical Reports
-
-Upload medical reports (PDF, images, etc.)
-
-Add report type (Blood Test, X-Ray, MRI, etc.)
-
-Add report date
-
-Attach vitals (BP, Sugar, etc.)
-
-Store reports securely in server
+* Upload medical reports (PDF, images, etc.)
+* Add report type (Blood Test, X-Ray, MRI, etc.)
+* Add report date
+* Attach vitals (BP, Sugar, etc.)
+* Store reports securely in server
 
 🔍 Report Management
-
-View uploaded reports
-
-Filter reports by:
-
-Date
-
-Report type
-
-Vitals keywords
-
-Download stored reports
+* View uploaded reports
+* Filter reports by:
+* Date
+* Report type
+* Vitals keywords
+* Download stored reports
 
 📤 Sharing
-
-Share reports securely via email
-
-Controlled access to reports
+* Share reports securely via email
+* Controlled access to reports
 
 📊 Dashboard
-
-Total reports count
-
-Vital records count
-
-Shared reports count
+* Total reports count
+* Vital records count
+* Shared reports count
 
 __________________________________________________________________________________________________________________________________
 
@@ -273,70 +232,43 @@ ________________________________________________________________________________
 
 🚀 Deployment Steps
 🔧 Backend Deployment (Render)
-
-Push backend code to GitHub
-
-Create a new Web Service on Render
-
-Connect GitHub repository
-
-Set environment variables:
-
-JWT_SECRET=your_secret_key
-
+* Push backend code to GitHub
+* Create a new Web Service on Render
+* Connect GitHub repository
+* Set environment variables:
+* JWT_SECRET=your_secret_key
 
 Set start command:
-
 node server.js
-
-
 Deploy backend
 
 🌐 Frontend Deployment (Vercel)
-
-Push frontend code to GitHub
-
-Create new project in Vercel
-
-Import GitHub repository
+* Push frontend code to GitHub
+* Create new project in Vercel
+* Import GitHub repository
 
 Set build command:
-
 npm run build
-
-
 Set output directory:
-
 dist
-
-
 Add backend API URL in environment variables
-
 Deploy frontend
 
 __________________________________________________________________________________________________________________________________
 
 🧪 Testing
-
-API tested using Postman
-
-Manual UI testing for all features
-
-Authentication and file uploads validated
+* API tested using Postman
+* Manual UI testing for all features
+* Authentication and file uploads validated
 
 __________________________________________________________________________________________________________________________________
 
 📈 Future Enhancements
-
-Role-based access (Doctor / Patient)
-
-Cloud storage for reports
-
-Report encryption
-
-Analytics for vitals
-
-Mobile app version
+* Role-based access (Doctor / Patient)
+* Cloud storage for reports
+* Report encryption
+* Analytics for vitals
+* Mobile app version
 
 __________________________________________________________________________________________________________________________________
 
