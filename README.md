@@ -1,9 +1,10 @@
-🏥 Digital Health Wallet
+**🏥 Digital Health Wallet
+**
 A Digital Health Wallet is a full-stack web application that allows users to securely store, manage, track, and share medical records and health vitals in one centralized platform — just like a digital wallet, but for health data.
 Instead of carrying physical medical reports such as blood tests, X-rays, or prescriptions, users can upload and access them anytime, anywhere.
 
-🚀 Features
-🔐 User Authentication
+**🚀 Features
+**🔐 User Authentication
 Secure Register & Login using JWT (JSON Web Tokens)
 
 📄 Medical Report Management
