@@ -43,23 +43,23 @@ Why MVC?
 __________________________________________________________________________________________________________________________________
 
 🛠 Tech Stack
-Frontend
-React.js
-React Router DOM
-Axios
-CSS
+* Frontend
+* React.js
+* React Router DOM
+* Axios
+* CSS
 
 Backend
-Node.js
-Express.js
-JWT (JSON Web Token)
-Multer (file uploads)
-SQLite3
+* Node.js
+* Express.js
+* JWT (JSON Web Token)
+* Multer (file uploads)
+* SQLite3
 
 Tools
-Git & GitHub
-Postman
-VS Code
+* Git & GitHub
+* Postman
+* VS Code
 
 __________________________________________________________________________________________________________________________________
 
@@ -145,15 +145,11 @@ ________________________________________________________________________________
 __________________________________________________________________________________________________________________________________
 
 ⚙️ Backend Explanation (High Level)
-server.js
-
-Entry point of backend
-
-Configures middleware (CORS, JSON parsing)
-
-Registers API routes
-
-config/db.js
+1. server.js
+* Entry point of backend
+* Configures middleware (CORS, JSON parsing)
+* Registers API routes
+2. config/db.js
 
 Creates and manages SQLite database connection
 
