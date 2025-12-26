@@ -356,3 +356,4 @@ The project demonstrates real-world full-stack development, clean architecture, 
 
 __________________________________________________________________________________________________________________________________
 ⚠️ Note: The backend may take a few seconds to wake up on first request due to Render’s free tier cold start.
+
