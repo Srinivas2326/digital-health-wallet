@@ -1,242 +1,358 @@
-🩺 Digital Health Wallet
+🩺 DIGITAL HEALTH WALLET
 
-A full-stack web application that allows users to securely store, manage, and share their medical records and health vitals in one place — just like a digital wallet for health data.
+📌 Project Overview
 
-This project is built using React.js for the frontend, Node.js + Express.js for the backend, and SQLite as the database, following the MVC architecture.
+Digital Health Wallet is a full-stack web application that allows users to securely store, manage, and share medical records and health vitals in one centralized digital platform.
 
-🚀 Live Demo
+The idea is similar to a digital wallet, but instead of money, it stores health data such as medical reports, lab tests, X-rays, and vitals like BP and sugar levels.
 
-Frontend (Vercel):
-👉 https://digital-health-wallet-ochre.vercel.app
+This system eliminates the need to carry physical medical reports and enables easy access, tracking, and secure sharing of health information.
 
-Backend API (Render):
-👉 https://digital-health-wallet-sp88.onrender.com
+__________________________________________________________________________________________________________________________________
 
-📌 Features
+🎯 Project Objective
+
+The main objectives of this project are:
+
+To provide a secure digital space for storing medical records
+
+To allow users to upload, view, filter, and manage health reports
+
+To track health vitals over time
+
+To enable secure sharing of reports with doctors or family members
+
+To implement authentication and authorization using JWT
+
+To follow MVC architecture for clean, scalable, and maintainable code
+
+__________________________________________________________________________________________________________________________________
+
+🧠 Core Idea
+
+“Instead of carrying physical medical reports, users can store all their health data digitally and access it anytime, anywhere.”
+
+The application acts as a personal health repository, giving users complete control over their medical information.
+
+__________________________________________________________________________________________________________________________________
+
+🏗 System Architecture
+
+The project follows the MVC (Model–View–Controller) architecture.
+
+React (Frontend)
+   ↓ HTTP Requests (Axios)
+Node.js + Express (Backend API)
+   ↓
+SQLite Database
+
+Why MVC?
+
+Separation of concerns
+
+Clean and readable code
+
+Easier debugging and scalability
+
+Industry-standard architecture
+
+__________________________________________________________________________________________________________________________________
+
+🛠 Tech Stack
+Frontend
+React.js
+React Router DOM
+Axios
+CSS
+
+Backend
+Node.js
+Express.js
+JWT (JSON Web Token)
+Multer (file uploads)
+SQLite3
+
+Tools
+Git & GitHub
+Postman
+VS Code
+
+__________________________________________________________________________________________________________________________________
+
 🔐 Authentication & Security
 
-User registration and login
+User authentication is implemented using JWT
 
-JWT-based authentication
+Protected routes require a valid token
 
-Protected routes
+Passwords are securely handled
 
-Password hashing using bcrypt
+Only authenticated users can:
+
+Upload reports
+
+View their reports
+
+Share reports
+
+__________________________________________________________________________________________________________________________________
+
+✨ Features
+👤 User Features
+
+Register & Login
+
+Secure authentication using JWT
+
+User profile management
 
 📄 Medical Reports
 
-Upload medical reports (PDF / Images)
+Upload medical reports (PDF, images, etc.)
 
-Store reports with type, date, and vitals info
+Add report type (Blood Test, X-Ray, MRI, etc.)
 
-View and delete uploaded reports
+Add report date
 
-Secure file storage using server file system
+Attach vitals (BP, Sugar, etc.)
 
-❤️ Health Vitals
+Store reports securely in server
 
-Add vitals such as BP, Sugar, Heart Rate
+🔍 Report Management
 
-View vitals history
+View uploaded reports
 
-Track vitals over time
+Filter reports by:
 
-🤝 Report Sharing
+Date
+
+Report type
+
+Vitals keywords
+
+Download stored reports
+
+📤 Sharing
 
 Share reports securely via email
 
-Revoke shared access anytime
+Controlled access to reports
 
-View reports shared with you
+📊 Dashboard
 
-🎨 UI & UX
+Total reports count
 
-Clean and responsive UI
+Vital records count
 
-Light mode & Dark mode support
+Shared reports count
 
-Dashboard overview
+__________________________________________________________________________________________________________________________________
 
-Filters by date, report type, and vitals keywords
-
-🧱 Tech Stack
-Frontend
-
-React.js
-
-React Router
-
-Axios
-
-Context API
-
-CSS (Custom styling)
-
-Backend
-
-Node.js
-
-Express.js
-
-SQLite
-
-Multer (file uploads)
-
-JSON Web Token (JWT)
-
-bcrypt
-
-CORS
-
-Deployment
-
-Frontend: Vercel
-
-Backend: Render
-
-📁 Project Structure
-
-digital-health-wallet/
+📁 Project Folder Structure
+```DIGITAL-HEALTH-WALLET
 │
-├── backend/
-│   ├── src/
-│   │   ├── config/        # Database configuration
-│   │   ├── controllers/   # Business logic
-│   │   ├── middleware/    # Auth & upload middlewares
-│   │   ├── routes/        # API routes
-│   │   ├── uploads/       # Uploaded medical reports
-│   │   ├── server.js      # Express server entry
-│   │   └── healthwallet.db
+├── backend
+│   ├── config
+│   │   └── db.js
+│   ├── controllers
+│   │   ├── authController.js
+│   │   ├── reportController.js
+│   │   └── userController.js
+│   ├── middlewares
+│   │   ├── authMiddleware.js
+│   │   └── uploadMiddleware.js
+│   ├── routes
+│   │   ├── authRoutes.js
+│   │   ├── reportRoutes.js
+│   │   └── userRoutes.js
+│   ├── uploads
+│   │   └── reports
+│   ├── server.js
 │   └── package.json
 │
-├── frontend/
-│   ├── src/
-│   │   ├── components/
-│   │   ├── pages/
-│   │   ├── context/
-│   │   ├── api/
-│   │   └── index.css
+├── frontend
+│   ├── src
+│   │   ├── components
+│   │   ├── pages
+│   │   ├── services
+│   │   ├── App.jsx
+│   │   └── main.jsx
+│   ├── public
 │   └── package.json
 │
+├── .gitignore
 └── README.md
+```
 
-🗄️ Database
+__________________________________________________________________________________________________________________________________
 
-SQLite database (healthwallet.db)
+⚙️ Backend Explanation (High Level)
+server.js
 
-Tables:
+Entry point of backend
 
-users
+Configures middleware (CORS, JSON parsing)
 
-reports
+Registers API routes
 
-vitals
+config/db.js
 
-shared_access
+Creates and manages SQLite database connection
 
-📌 Note:
+models
 
-Local development and deployed backend use separate databases
+Defines database schema (users, reports)
 
-Deployed data cannot be seen in local DB browser
+controllers
 
-⚙️ Environment Variables
+Business logic for authentication, reports, users
 
-Create a .env file inside the backend folder:
+routes
 
-PORT=5000
+API endpoints like:
+
+/register
+
+/login
+
+/reports/upload
+
+/reports/list
+
+middlewares
+
+JWT authentication check
+
+File upload validation
+
+__________________________________________________________________________________________________________________________________
+
+🎨 Frontend Explanation (High Level)
+Components
+
+Reusable UI components (Navbar, Cards, etc.)
+
+Pages
+
+Login
+
+Register
+
+Dashboard
+
+Upload Report
+
+View Reports
+
+Services
+
+Axios API configuration
+
+Handles backend requests
+
+__________________________________________________________________________________________________________________________________
+
+🔄 Data Flow
+
+User interacts with React UI
+
+React sends HTTP request using Axios
+
+Express server receives request
+
+Middleware validates request & token
+
+Controller processes logic
+
+Database stores or retrieves data
+
+Response sent back to frontend
+
+UI updates dynamically
+
+__________________________________________________________________________________________________________________________________
+
+🚀 Deployment Steps
+🔧 Backend Deployment (Render)
+
+Push backend code to GitHub
+
+Create a new Web Service on Render
+
+Connect GitHub repository
+
+Set environment variables:
+
 JWT_SECRET=your_secret_key
 
-▶️ How to Run Locally
-1️⃣ Clone the Repository
-git clone https://github.com/your-username/digital-health-wallet.git
-cd digital-health-wallet
 
-2️⃣ Backend Setup
-cd backend
-npm install
-npm run dev
+Set start command:
+
+node server.js
 
 
-Backend runs on:
+Deploy backend
 
-http://localhost:5000
+🌐 Frontend Deployment (Vercel)
 
-3️⃣ Frontend Setup
-cd frontend
-npm install
-npm run dev
+Push frontend code to GitHub
 
+Create new project in Vercel
 
-Frontend runs on:
+Import GitHub repository
 
-http://localhost:5173
+Set build command:
 
-📤 File Uploads
-
-Reports are stored in:
-
-backend/src/uploads/reports
+npm run build
 
 
-Access uploaded files via:
+Set output directory:
 
-http://localhost:5000/uploads/reports/<filename>
+dist
 
-🔍 API Overview
-Method	Endpoint	Description
-POST	/api/auth/register	Register user
-POST	/api/auth/login	Login user
-POST	/api/reports	Upload report
-GET	/api/reports	Get user reports
-DELETE	/api/reports/:id	Delete report
-POST	/api/vitals	Add vitals
-GET	/api/vitals	Get vitals
-POST	/api/share	Share report
-🧠 Architecture
 
-MVC Architecture
+Add backend API URL in environment variables
 
-Models: Database schema & queries
+Deploy frontend
 
-Controllers: Business logic
+__________________________________________________________________________________________________________________________________
 
-Routes: API endpoints
+🧪 Testing
 
-Middlewares handle:
+API tested using Postman
 
-Authentication
+Manual UI testing for all features
 
-File uploads
+Authentication and file uploads validated
 
-Authorization
+__________________________________________________________________________________________________________________________________
 
-🛡️ Security Highlights
-
-JWT authentication
-
-Password hashing
-
-Protected API routes
-
-CORS configured for trusted origins
-
-File type validation for uploads
-
-🎯 Future Enhancements
-
-Charts for vitals trends
+📈 Future Enhancements
 
 Role-based access (Doctor / Patient)
 
-Email notifications
-
 Cloud storage for reports
 
-Export reports as PDF
+Report encryption
 
-👨‍💻 Author
-Srinivas
-B.Tech CSE (AI)
-Full Stack Developer
-React • Node.js • Express • SQLite
+Analytics for vitals
+
+Mobile app version
+
+__________________________________________________________________________________________________________________________________
+
+👨‍💻 Developer
+
+Name: Srinivas
+Project: Digital Health Wallet
+Role: Full-Stack Developer
+
+__________________________________________________________________________________________________________________________________
+
+⭐ Conclusion
+
+Digital Health Wallet provides a secure, scalable, and user-friendly way to manage medical data digitally.
+The project demonstrates real-world full-stack development, clean architecture, and secure data handling.
+
+__________________________________________________________________________________________________________________________________
+⚠️ Note: The backend may take a few seconds to wake up on first request due to Render’s free tier cold start.
