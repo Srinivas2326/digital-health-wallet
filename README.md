@@ -2,11 +2,11 @@
 
 📌 Project Overview
 
-Digital Health Wallet is a full-stack web application that allows users to securely store, manage, and share medical records and health vitals in one centralized digital platform.
+* Digital Health Wallet is a full-stack web application that allows users to securely store, manage, and share medical records and health vitals in one centralized digital platform.
 
-The idea is similar to a digital wallet, but instead of money, it stores health data such as medical reports, lab tests, X-rays, and vitals like BP and sugar levels.
+* The idea is similar to a digital wallet, but instead of money, it stores health data such as medical reports, lab tests, X-rays, and vitals like BP and sugar levels.
 
-This system eliminates the need to carry physical medical reports and enables easy access, tracking, and secure sharing of health information.
+* This system eliminates the need to carry physical medical reports and enables easy access, tracking, and secure sharing of health information.
 
 __________________________________________________________________________________________________________________________________
 
