@@ -206,7 +206,7 @@ ________________________________________________________________________________
 * node server.js
 * Deploy backend
 
-🌐 Frontend Deployment (Vercel: https://digital-health-wallet-ochre.vercel.app/)
+🌐 Frontend Deployment ([Vercel](https://digital-health-wallet-ochre.vercel.app/))
 * Push frontend code to GitHub
 * Create new project in Vercel
 * Import GitHub repository
