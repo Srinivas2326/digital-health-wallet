@@ -195,7 +195,7 @@ ________________________________________________________________________________
 __________________________________________________________________________________________________________________________________
 
 🚀 Deployment Steps
-🔧 Backend Deployment (Render)
+🔧 Backend Deployment ([Render](https://digital-health-wallet-sp88.onrender.com))
 * Push backend code to GitHub
 * Create a new Web Service on Render
 * Connect GitHub repository
@@ -206,7 +206,7 @@ ________________________________________________________________________________
 * node server.js
 * Deploy backend
 
-🌐 Frontend Deployment (Vercel)
+🌐 Frontend Deployment (Vercel: https://digital-health-wallet-ochre.vercel.app/)
 * Push frontend code to GitHub
 * Create new project in Vercel
 * Import GitHub repository
